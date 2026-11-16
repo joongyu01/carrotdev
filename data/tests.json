@@ -1,0 +1,272 @@
+{
+  "note": "시험 방법. tests의 키는 matrix.json settings의 id. params는 carrot_settings.json에서 옮긴 값(아래 source). 설정이 바뀌면 params도 다시 맞춘다.",
+  "source": "joongyu01/carrot-wip-dev 74ccb948 (2026-11-17) openpilot/selfdrive/carrot_settings.json",
+  "menus": {
+    "turnlight": {"ko": "Joongyu Lab › Turnlight", "en": "Joongyu Lab › Turnlight"},
+    "hda": {"ko": "차량·하드웨어 › CANFD·HDA", "en": "Vehicle & Hardware › CANFD·HDA"},
+    "lc": {"ko": "주행 제어 › 차량 조향 › 차로 변경 (자동 턴)", "en": "Driving › Steering › Lane Change (Auto Turn)"}
+  },
+  "params": {
+    "CanfdBlinkerKick": {"menu": "turnlight", "ko": "[Kick] CANFD(HDA2)·CAN(CGW1) Turnlight 자동", "en": "[Kick] CANFD(HDA2)·CAN(CGW1) Turnlight auto", "min": 0, "max": 1, "def": 0},
+    "CanfdBlinkerKickMode": {"menu": "turnlight", "ko": "[Kick] CANFD(HDA2)·CAN(CGW1) 송신 방식", "en": "[Kick] CANFD(HDA2)·CAN(CGW1) send mode", "min": 0, "max": 3, "def": 1},
+    "CanfdBlinkerKickModelMode": {"menu": "turnlight", "ko": "[Kick] CANFD(HDA2)·CAN(CGW1) 모델 차로변경 Turnlight", "en": "[Kick] CANFD(HDA2)·CAN(CGW1) Turnlight for model lane changes", "min": 0, "max": 4, "def": 0},
+    "TunnelLaneChangeHold": {"menu": "turnlight", "ko": "[보류] CANFD(CCNC) 터널 Turnlight·차선변경 보류", "en": "[Hold] CANFD(CCNC) Tunnel Turnlight & lane change hold", "min": 0, "max": 1, "def": 0},
+    "RoundaboutLaneChangeHold": {"menu": "turnlight", "ko": "[보류] CANFD(CCNC) 회전교차로 Turnlight·차선변경 보류", "en": "[Hold] CANFD(CCNC) Roundabout Turnlight & lane change hold", "min": 0, "max": 1, "def": 1},
+    "CanfdHazardTest": {"menu": "turnlight", "ko": "[TEST] CANFD(HDA2·0x1ea) 비상등", "en": "[TEST] CANFD(HDA2·0x1ea) Hazard lights", "min": 0, "max": 1, "def": 0},
+    "AutoBlinkerControl": {"menu": "turnlight", "ko": "[Jetson·B1] 외부장치 Turnlight 자동제어", "en": "[Jetson·B1] External device Turnlight auto control", "min": 0, "max": 2, "def": 0},
+    "ManualLaneChangeIndicator": {"menu": "turnlight", "ko": "[Jetson·B1] CANFD(I5 PE) 수동 차선변경 Turnlight (시험)", "en": "[Jetson·B1] CANFD(I5 PE) Manual lane change Turnlight (test)", "min": 0, "max": 1, "def": 0},
+    "ManualTurnIndicator": {"menu": "turnlight", "ko": "[Jetson·B1] CANFD(I5 PE) 수동 턴 Turnlight (시험)", "en": "[Jetson·B1] CANFD(I5 PE) Manual turn Turnlight (test)", "min": 0, "max": 1, "def": 0},
+    "ModelDesireIndicator": {"menu": "turnlight", "ko": "[Jetson·B1] CANFD(I5 PE) 모델 desire Turnlight (시험)", "en": "[Jetson·B1] CANFD(I5 PE) Model desire Turnlight (test)", "min": 0, "max": 1, "def": 0},
+    "ModelPathIndicator": {"menu": "turnlight", "ko": "[Jetson·B1] CANFD(I5 PE) 모델 경로 Turnlight (시험)", "en": "[Jetson·B1] CANFD(I5 PE) Model path Turnlight (test)", "min": 0, "max": 1, "def": 0},
+    "AutoTurnControlRightLaneChange": {"menu": "turnlight", "ko": "[Jetson·B1] CANFD(후측방 BSD) 우회전 전 자동 차선변경 거리(m)", "en": "[Jetson·B1] CANFD(rear BSD) Auto lane change distance before a right turn (m)", "min": 0, "max": 500, "def": 0},
+    "CanfdBlinkerControl": {"menu": "turnlight", "ko": "[SPAS] CANFD(SPAS 차) 주차ECU 경유 Turnlight (시험)", "en": "[SPAS] CANFD(SPAS cars) Turnlight via parking ECU (test)", "min": 0, "max": 1, "def": 0},
+    "BlinkerLatchedTurn": {"menu": "turnlight", "ko": "[레버] CANFD(0x3C1) 레버로 회전/차선변경 구분 (km/h, 0=끔)", "en": "[Lever] CANFD(0x3C1) Turn vs lane change by lever (km/h, 0=off)", "min": 0, "max": 80, "def": 0},
+    "LaneChangeLeverWait": {"menu": "turnlight", "ko": "[레버] CANFD(0x3C1)·Tesla 원터치 차선변경 5회 대기", "en": "[Lever] CANFD(0x3C1)·Tesla One-touch lane change waits 5 flashes", "min": 0, "max": 1, "def": 0},
+    "CanfdBlinkerMenuTest": {"menu": "turnlight", "ko": "[TEST] CANFD(HDA2) Kick Turnlight 명령", "en": "[TEST] CANFD(HDA2) Kick Turnlight command", "min": 0, "max": 2, "def": 0},
+    "PalisadeBlinkerTest": {"menu": "turnlight", "ko": "[TEST] CAN(CGW1) Turnlight 상태 P단 3초", "en": "[TEST] CAN(CGW1) Turnlight state, P 3 s", "min": 0, "max": 4, "def": 0},
+    "CanfdBlinkerTest": {"menu": "turnlight", "ko": "[TEST] CANFD(SPAS 차, 3~18은 I5 PE) 정차 SPAS Turnlight", "en": "[TEST] CANFD(SPAS cars, 3-18 I5 PE) Parked SPAS Turnlight", "min": 0, "max": 18, "def": 0},
+    "CanfdBlinkerStalk": {"menu": "turnlight", "ko": "[TEST] CANFD(0x3C1) 레버 재생", "en": "[TEST] CANFD(0x3C1) Lever replay", "min": 0, "max": 4, "def": 0},
+    "CanfdAprkDiag": {"menu": "turnlight", "ko": "[TEST] CANFD(HDA2·comma four) APRK 진단 연결", "en": "[TEST] CANFD(HDA2·comma four) APRK diagnostic link", "min": 0, "max": 1, "def": 0},
+    "CanfdHDA2": {"menu": "hda", "ko": "CANFD HDA2지원(0)", "en": "CANFD HDA2(0)", "min": 0, "max": 1, "def": 0},
+    "LaneChangeNeedTorque": {"menu": "lc", "ko": "차선변경 조향토크 사용", "en": "LaneChange use steering torque", "min": -1, "max": 1, "def": 0}
+  },
+  "record": {
+    "ko": [
+      "날짜, 차종, 바꾼 설정과 값, 결과(좌·우 각각 ✅/❌), 외부 램프 영상을 남깁니다.",
+      "route 이름·DongleId·위치는 공개 Issue나 이 사이트에 쓰지 않고 개발자(GitHub joongyu01)에게 따로 보냅니다.",
+      "개발자는 data/matrix.json 해당 칸의 상태와 근거(날짜·결과)를 고쳐 push합니다. route는 내부 기록에만 둡니다."
+    ],
+    "en": [
+      "Keep the date, car, the settings and values you changed, the result (✅/❌ for left and right) and a video of the exterior lamp.",
+      "Do not put route names, DongleId or locations in public issues or on this site; send them to the developer (GitHub joongyu01) privately.",
+      "The developer updates the status and evidence (date, result) of that cell in data/matrix.json and pushes. Routes stay in the internal record."
+    ]
+  },
+  "lamp_log": {
+    "ko": "로그 확인(CAN-FD): carState.leftBlinker / rightBlinker와 blinkerLamp(1 왼쪽·2 오른쪽)는 순정 BLINKERS 램프 피드백입니다. 시험 시각에 이 값이 켜지면 램프가 켜진 것입니다. 일반 CAN(CGW1) 차는 계기판·BVM만 켜지고 외부 램프는 꺼져 있던 사례(K5 DL3·DH)가 있어 외부 램프 영상으로 판정합니다.",
+    "en": "Log check (CAN-FD): carState.leftBlinker / rightBlinker and blinkerLamp (1 left, 2 right) come from the stock BLINKERS lamp feedback. If they turn on at test time, the lamp lit. On classic-CAN (CGW1) cars the cluster and BVM lit while the exterior lamp stayed off (K5 DL3, DH), so judge by an exterior-lamp video."
+  },
+  "tests": {
+    "1": {
+      "pre": {"ko": ["D단 주행. 속도·인게이지 여부 무관(설정 설명).", "양쪽 차선이 보이는 빈 도로. 운전자와 관찰자 2명.", "추가 장치 없음."],
+              "en": ["Driving in D. Any speed, engaged or not (setting description).", "An empty road with both lane lines visible. Driver plus one observer.", "No extra device."]},
+      "set": [
+        {"key": "CanfdBlinkerKick", "ko": "1", "en": "1"},
+        {"key": "CanfdBlinkerKickMode", "ko": "1 (기본, 피기백)", "en": "1 (default, piggyback)"},
+        {"key": "CanfdBlinkerControl", "ko": "0 (Kick을 켜면 다음 부팅 때 자동으로 꺼짐)", "en": "0 (turned off automatically at the next boot once Kick is on)"}
+      ],
+      "steps": {"ko": ["P단에서 설정을 바꾸고 다음 주행을 시작합니다(송신 방식은 다음 OnRoad 시작 때 적용).", "D단으로 주행합니다.", "깜빡이를 켜지 않고 한쪽 차선으로 천천히 다가가 선을 넘기 시작합니다.", "반대쪽도 한 번 합니다."],
+                "en": ["Change the settings in P and start the next drive (the send mode applies at the next OnRoad start).", "Drive in D.", "Without signalling, drift slowly toward one lane line and start to cross it.", "Do the other side once."]},
+      "check": {"ko": ["그 방향 외부 깜빡이가 약 1초(2번 정도) 켜짐 — 관찰자 육안·영상.", "계기판 깜빡이 표시.", "CAN 오류·accFaulted 경고가 없음.", "일반 CAN(CGW1) 차: 계기판·BVM만 켜지면 실패(K5 DL3·DH 사례)."],
+                "en": ["The exterior signal on that side flashes for about 1 s (about two flashes): observer, eyes and video.", "The cluster shows the signal.", "No CAN error or accFaulted warning.", "Classic-CAN (CGW1) cars: cluster and BVM alone is a failure (K5 DL3, DH)."]},
+      "unk": {"ko": ["기본 모드 1(피기백)의 주행 Kick 점등은 어느 차도 기록 없음(직송 100 Hz만 확인)."],
+              "en": ["No car has a record of driving Kick lighting with default mode 1 (piggyback); only direct 100 Hz is confirmed."]}
+    },
+    "2": {
+      "pre": {"ko": ["1번(Kick 자동)과 같은 조건.", "HDA1 차(투싼)는 모드 1만 나감. 0·2·3은 panda가 거부."],
+              "en": ["Same as test 1 (Kick auto).", "HDA1 cars (Tucson) send mode 1 only; panda rejects 0, 2 and 3."]},
+      "set": [
+        {"key": "CanfdBlinkerKick", "ko": "1", "en": "1"},
+        {"key": "CanfdBlinkerKickMode", "ko": "1부터 시작, 비교할 때만 0·2·3", "en": "start with 1; 0, 2, 3 only for comparison"}
+      ],
+      "steps": {"ko": ["모드를 하나 고르고 다음 주행을 시작합니다(1↔2/3 변경은 다음 OnRoad 시작 때 적용).", "1번 시험을 좌·우 한 번씩 합니다.", "모드를 바꿔 반복합니다."],
+                "en": ["Pick one mode and start the next drive (1↔2/3 applies at the next OnRoad start).", "Run test 1 once left and once right.", "Change the mode and repeat."]},
+      "check": {"ko": ["모드별 외부 램프 점등 여부.", "모드 2·3: CAN 오류·accFaulted·bus-off 여부(10-30~11-02 측정: 100 Hz 111회 중 오류 프레임 78회, bus-off 33회).", "모드 0: 주차 ECU가 멈춤 요청에 답할 때만 송신. 답이 없는 I5 PE는 램프가 안 켜짐(11-04~05)."],
+                "en": ["Whether the exterior lamp lights in each mode.", "Modes 2/3: CAN errors, accFaulted, bus-off (10-30..11-02: 78 error frames and 33 bus-offs in 111 sends at 100 Hz).", "Mode 0 sends only if the parking ECU answers the pause request; on the I5 PE it does not, so no lamp (11-04..05)."]},
+      "unk": {"ko": ["모드 1 주행 점등은 어느 차도 기록 없음."], "en": ["No car has a driving record of mode 1 lighting the lamp."]}
+    },
+    "3": {
+      "pre": {"ko": ["D단, 인게이지 상태에서 모델 차로변경이 가능한 도로.", "리모컨·앱·음성·내비 중 하나로 차로변경을 시작할 수단."],
+              "en": ["In D, engaged, on a road where the model can change lanes.", "A way to start the lane change: remote, app, voice or navigation."]},
+      "set": [
+        {"key": "CanfdBlinkerKick", "ko": "1 (필수)", "en": "1 (required)"},
+        {"key": "CanfdBlinkerKickModelMode", "ko": "0 (유지, 기본) 또는 2/3/4 (3/5/7번)", "en": "0 (hold, default) or 2/3/4 (3/5/7 flashes)"}
+      ],
+      "steps": {"ko": ["설정 후 주행을 시작합니다.", "인게이지 상태에서 리모컨·앱·음성·내비로 차로변경을 요청합니다.", "운전자 레버로 시작한 차로변경은 대상이 아닙니다."],
+                "en": ["Start driving after setting it.", "While engaged, request a lane change by remote, app, voice or navigation.", "Lane changes the driver starts with the lever are not covered."]},
+      "check": {"ko": ["0: 차로변경 동안 외부 깜빡이 유지, 새 차로에 60% 들어가면 꺼짐(최소 1초·최대 10초, 일반 CAN 최대 5초).", "2/3/4: 정한 횟수만 깜빡임.", "차로변경이 취소되면 바로 꺼짐.", "시작 뒤 최소 12초 같은 쪽 레버가 무시되는 것은 정상(설정 설명)."],
+                "en": ["0: the exterior signal stays on during the lane change and goes off at 60% into the new lane (1 s min, 10 s max; 5 s max on classic CAN).", "2/3/4: flashes exactly that many times.", "Goes off at once if the lane change is cancelled.", "The same-side lever being ignored for at least 12 s after the start is expected (setting description)."]},
+      "unk": {"ko": ["CAN-FD 차의 모델 차로변경 점등 기록 없음(팰리세이드만 11-14 보고)."], "en": ["No CAN-FD car has a record of this; only the Palisade (11-14 report)."]}
+    },
+    "4": {
+      "pre": {"ko": ["CAN-FD(CCNC) 차.", "순정 내비가 진입 전 60초 안 또는 터널 안에서 「차로변경 금지」를 알리는 터널.", "D단 주행."],
+              "en": ["CAN-FD (CCNC) car.", "A tunnel where the stock navigation announces 'no lane change' within 60 s before entry or inside.", "Driving in D."]},
+      "set": [
+        {"key": "TunnelLaneChangeHold", "ko": "1", "en": "1"},
+        {"key": "CanfdBlinkerKick", "ko": "1 (Kick 보류를 보려면)", "en": "1 (to see Kick being held)"}
+      ],
+      "steps": {"ko": ["터널 안내가 뜨는 구간을 주행합니다.", "안내가 뜬 뒤 깜빡이 없이 차선 쪽으로 다가갑니다.", "깜빡이를 켜고 핸들 토크 없이 기다려 봅니다."],
+                "en": ["Drive through a section where the tunnel announcement appears.", "After it appears, drift toward a lane line without signalling.", "Turn the signal on and wait without steering torque."]},
+      "check": {"ko": ["Kick 깜빡이가 켜지지 않음.", "차선변경은 운전자가 그쪽으로 핸들 토크를 줄 때만 시작.", "깜빡이를 켜고 기다리면 계기판에 「작동할 수 없는 터널입니다」."],
+                "en": ["Kick does not flash.", "The lane change starts only when the driver steers that way.", "Waiting with the signal on shows 'tunnel: cannot operate' on the cluster."]},
+      "unk": {"ko": ["안내가 뜨려면 순정 내비 경로 안내가 켜져 있어야 하는지 미확인.", "안내 없는 짧은 지하차도는 대상 아님(설정 설명)."],
+              "en": ["Unconfirmed whether stock route guidance must be active for the announcement.", "Short underpasses without an announcement are not covered (setting description)."]}
+    },
+    "5": {
+      "pre": {"ko": ["CAN-FD(CCNC) 차.", "순정 계기판에 회전교차로 표지가 뜨는 도로, 60 km/h 미만."],
+              "en": ["CAN-FD (CCNC) car.", "A road where the stock cluster shows a roundabout sign, below 60 km/h."]},
+      "set": [
+        {"key": "RoundaboutLaneChangeHold", "ko": "1 (기본)", "en": "1 (default)"},
+        {"key": "CanfdBlinkerKick", "ko": "1 (Kick 보류를 보려면)", "en": "1 (to see Kick being held)"}
+      ],
+      "steps": {"ko": ["회전교차로로 접근합니다.", "표지가 뜬 뒤 20초 안에 깜빡이 없이 차선 쪽으로 다가갑니다."],
+                "en": ["Approach a roundabout.", "Within 20 s after the sign appears, drift toward a lane line without signalling."]},
+      "check": {"ko": ["계기판 배경이 빨간색으로 깜빡임.", "Kick 깜빡이가 켜지지 않음.", "차선변경은 핸들 토크를 줄 때만 시작."],
+                "en": ["The cluster background flashes red.", "Kick does not flash.", "The lane change starts only with driver steering torque."]},
+      "unk": {"ko": ["표지가 뜨는 조건(내비 안내 필요 여부) 미확인."], "en": ["When the sign appears (whether navigation must be on) is unconfirmed."]}
+    },
+    "6": {
+      "pre": {"ko": ["CAN-FD HDA2 차, 카메라가 0x1EA를 보내는 차.", "P단 정차. 차 밖 관찰자 1명."],
+              "en": ["CAN-FD HDA2 car whose camera sends 0x1EA.", "Parked in P. One observer outside."]},
+      "set": [
+        {"key": "CanfdHDA2", "ko": "현재 1인지 확인만. HDA1 차에서 1로 바꾸지 않음", "en": "check it is already 1; do not change it to 1 on an HDA1 car"},
+        {"key": "CanfdHazardTest", "ko": "1 → 확인 후 0", "en": "1, then 0 after checking"}
+      ],
+      "steps": {"ko": ["P단에서 CanfdHazardTest를 1로 바꿉니다.", "관찰자가 앞·뒤 비상등을 봅니다(약 0.1초 뒤 점등).", "0으로 돌려 바로 꺼지는지 봅니다. 재부팅하면 0으로 돌아갑니다."],
+                "en": ["In P, set CanfdHazardTest to 1.", "The observer watches the front and rear hazards (they light after about 0.1 s).", "Set it back to 0 and check they go off at once. A reboot also resets it to 0."]},
+      "check": {"ko": ["외부 비상등 점등(I5 PE: 108/108).", "0으로 바꾸면 바로 꺼짐.", "「계기판 표시 테스트」 칸 129를 쓰는 중이면 그 값이 우선."],
+                "en": ["Exterior hazards light (I5 PE: 108/108).", "They go off at once on 0.", "While the cluster display test uses cell 129, that value wins."]},
+      "unk": {"ko": ["I5 PE 외 차종에서 bit 104가 비상등인지 미확인 — 이 시험이 그 확인."], "en": ["Whether bit 104 is the hazard lights on cars other than the I5 PE is unconfirmed; this test checks it."]}
+    },
+    "7": {
+      "pre": {"ko": ["Jetson USB2CAN 또는 Carrot-B1 장치가 장착된 차.", "블루투스 리모컨(깜빡이 버튼)."],
+              "en": ["A car fitted with a Jetson USB2CAN or Carrot-B1 device.", "Bluetooth remote with blinker buttons."]},
+      "set": [
+        {"key": "AutoBlinkerControl", "ko": "1 또는 2", "en": "1 or 2"}
+      ],
+      "steps": {"ko": ["장치를 연결하고 화면에 노란 CAN 배지가 뜨는지 봅니다(74ccb948 이후).", "5 km/h 이하에서 리모컨 깜빡이 버튼을 누르고 교차로를 회전합니다.", "2: 내비(ATC) 차선변경이 시작될 때도 봅니다."],
+                "en": ["Connect the device and check the yellow CAN badge on screen (from 74ccb948).", "Below 5 km/h press a remote blinker button and turn at a junction.", "Mode 2: also watch when a navigation (ATC) lane change starts."]},
+      "check": {"ko": ["회전 동안 외부 깜빡이 유지, 회전 후 핸들이 중앙으로 오면 꺼짐.", "같은 방향 버튼으로 유지 취소, 반대 버튼으로 전환.", "크루즈 CANCEL로 중단."],
+                "en": ["The exterior signal stays on through the turn and goes off when the wheel returns to centre.", "Same-side button cancels the hold; the other button switches side.", "Cruise CANCEL stops it."]},
+      "unk": {"ko": ["어느 차에도 장착 기록이 없음. 장치 설치 방법은 이 사이트 범위 밖."], "en": ["No car has a recorded installation. How to install the device is outside this site."]}
+    },
+    "8~11": {
+      "pre": {"ko": ["아이오닉5 PE + Jetson USB2CAN.", "한 번에 하나만 켭니다."],
+              "en": ["Ioniq 5 PE with a Jetson USB2CAN.", "Turn on one setting at a time."]},
+      "set": [
+        {"key": "AutoBlinkerControl", "ko": "1 또는 2 (필수)", "en": "1 or 2 (required)"},
+        {"key": "ManualLaneChangeIndicator", "ko": "8번: 1", "en": "8: 1"},
+        {"key": "ManualTurnIndicator", "ko": "9번: 1", "en": "9: 1"},
+        {"key": "ModelDesireIndicator", "ko": "10번: 1", "en": "10: 1"},
+        {"key": "ModelPathIndicator", "ko": "11번: 1", "en": "11: 1"}
+      ],
+      "steps": {"ko": ["8 수동 차선변경: 5 km/h 이상, 깜빡이 없이 핸들로 차선 쪽으로 다가갑니다.", "9 수동 턴: 5~60 km/h에서 핸들을 42도 넘게 돌려 회전합니다.", "10 모델 desire: 횡제어 활성, 턴 10 km/h·차선변경 30 km/h 이상.", "11 모델 경로: 30 km/h 이상, 모델 경로가 차선을 넘는 구간."],
+                "en": ["8 manual lane change: above 5 km/h, steer toward a lane line without signalling.", "9 manual turn: at 5-60 km/h turn the wheel past 42 degrees.", "10 model desire: lateral active, turns from 10 km/h, lane changes from 30 km/h.", "11 model path: above 30 km/h where the model path crosses a lane line."]},
+      "check": {"ko": ["그 방향 외부 깜빡이 점등과 꺼지는 시점.", "곡선·회피·주차장 코너에서 잘못 켜지는지(9번 설명)."],
+                "en": ["The exterior signal on that side and when it goes off.", "False lighting on curves, swerves or car-park corners (setting 9 description)."]},
+      "unk": {"ko": ["장착 기록 없음. 실제 램프·주행 검증은 설정 설명에도 「별도 필요」."], "en": ["No device recorded. The setting descriptions also say real lamp and driving checks are still needed."]}
+    },
+    "12": {
+      "pre": {"ko": ["아이오닉5 PE + Jetson USB2CAN, 후측방 BSD.", "TBT 우회전·우측 분기가 있는 내비 경로, 10 km/h 이상."],
+              "en": ["Ioniq 5 PE with a Jetson USB2CAN and rear BSD.", "A navigation route with a right turn or right fork (TBT), above 10 km/h."]},
+      "set": [
+        {"key": "AutoTurnControlRightLaneChange", "ko": "250 (0=끔)", "en": "250 (0 = off)"},
+        {"key": "AutoBlinkerControl", "ko": "2", "en": "2"},
+        {"key": "LaneChangeNeedTorque", "ko": "0", "en": "0"}
+      ],
+      "steps": {"ko": ["내비 경로에 우회전을 넣고 주행합니다.", "설정 거리 안에 들어오면 우측 깜빡이 요청을 봅니다.", "30 km/h 이상이면 차선변경까지, 10~30 km/h는 표시만입니다."],
+                "en": ["Drive a route with a right turn.", "Inside the set distance, watch for the right signal request.", "Above 30 km/h it continues into a lane change; at 10-30 km/h it only signals."]},
+      "check": {"ko": ["우측 외부 깜빡이 점등.", "30 km/h 이상에서 우측 차선변경 시작.", "BSD 경고나 우측 앞차(3초 뒤 5 m 미만)가 있으면 시작 안 함."],
+                "en": ["Right exterior signal lights.", "Above 30 km/h a right lane change starts.", "With a BSD warning or a right-lane car ahead (under 5 m in 3 s) it does not start."]},
+      "unk": {"ko": ["장착 기록 없음."], "en": ["No device recorded."]}
+    },
+    "13": {
+      "pre": {"ko": ["CAN-FD 차, 레버 메시지 0x3C1이 8바이트인 차(EV4처럼 24바이트면 시작 안 함).", "주차 ECU가 응답해야 시작 — 먼저 20번 진단으로 응답을 확인."],
+              "en": ["CAN-FD car whose stalk message 0x3C1 is 8 bytes (24-byte cars such as the EV4 never start).", "It starts only if the parking ECU answers; check that first with test 20."]},
+      "set": [
+        {"key": "CanfdBlinkerControl", "ko": "1 → 재부팅 (끝나면 0 → 재부팅)", "en": "1, then reboot (afterwards 0, then reboot)"}
+      ],
+      "steps": {"ko": ["20번 진단에서 응답이 있는 차만 진행합니다.", "1로 바꾸고 재부팅합니다.", "18번 정차 시험(1/2)으로 램프를 먼저 봅니다.", "끝나면 0으로 돌리고 재부팅합니다(켜 두면 Kick·16번이 동작하지 않음)."],
+                "en": ["Go on only if test 20 got an answer.", "Set 1 and reboot.", "Check the lamp first with the parked test 18 (1/2).", "Afterwards set 0 and reboot (while on, Kick and test 16 do not work)."]},
+      "check": {"ko": ["P단 정차 시험에서 외부 깜빡이 점등.", "주행 중 오픈파일럿 차로변경·회전 때 깜빡이."],
+                "en": ["Exterior signal lights in the parked test.", "Signal during openpilot lane changes and turns while driving."]},
+      "unk": {"ko": ["시험한 차는 전부 주차 ECU 무응답. 응답하는 차는 아직 없음."], "en": ["Every tested car's parking ECU stayed silent; no car has answered yet."]}
+    },
+    "14": {
+      "pre": {"ko": ["CAN-FD 차, 0x3C1 레버 신호가 있는 차(EV4 24바이트 제외).", "횡제어 인게이지, 교차로가 있는 도로."],
+              "en": ["CAN-FD car with the 0x3C1 stalk signal (not the 24-byte EV4).", "Lateral engaged, on a road with junctions."]},
+      "set": [
+        {"key": "BlinkerLatchedTurn", "ko": "예: 50 (0=끔)", "en": "e.g. 50 (0 = off)"}
+      ],
+      "steps": {"ko": ["설정 속도 이하에서 레버를 반만 밀어(원터치) 켜짐-꺼짐-켜짐을 본 뒤 끝까지 겁니다(고정).", "차선변경 대신 회전으로 처리되는지 봅니다.", "그냥 고정하거나 원터치만 하면 차선변경입니다.", "설정 속도를 넘으면 고정해도 차선변경입니다."],
+                "en": ["Below the set speed, half-press the lever (one-touch), see on-off-on, then push it fully (latched).", "Check that it is handled as a turn, not a lane change.", "Latching straight away or one-touch alone means a lane change.", "Above the set speed, latching still means a lane change."]},
+      "check": {"ko": ["회전으로 정해지면 차선변경이 시작되지 않음.", "원터치 위치에 있는 동안 차선변경이 시작되지 않음.", "로그: carState.blinkerLever(0 놓음·1 원터치·2 고정)."],
+                "en": ["When classed as a turn, no lane change starts.", "No lane change starts while the lever sits in the one-touch position.", "Log: carState.blinkerLever (0 released, 1 one-touch, 2 latched)."]},
+      "unk": {"ko": ["회전 중 계기판 표시(빨간 점멸)·음성 안내가 현재 코드에 남아 있는지 미확인."], "en": ["Whether the turn cluster display (red flash) and voice prompt are still in the current code is unconfirmed."]}
+    },
+    "15": {
+      "pre": {"ko": ["CAN-FD 0x3C1 레버 차(또는 Tesla).", "인게이지, 옆 차로 차량 때문에 차선변경이 바로 승인되지 않는 상황."],
+              "en": ["CAN-FD car with the 0x3C1 stalk (or a Tesla).", "Engaged, with a car in the next lane so the lane change is not approved at once."]},
+      "set": [
+        {"key": "LaneChangeLeverWait", "ko": "1", "en": "1"}
+      ],
+      "steps": {"ko": ["옆 차로에 차가 있을 때 레버를 원터치로 누릅니다.", "5회(약 4초) 안에 옆 차가 지나가는 경우를 봅니다.", "지나가지 않는 경우도 한 번 봅니다."],
+                "en": ["One-touch the lever while a car is in the next lane.", "Watch a case where it clears within 5 flashes (about 4 s).", "Watch one case where it does not clear."]},
+      "check": {"ko": ["5회 동안 깜빡이 유지.", "그 안에 풀리면 차선변경 시작, 안 풀리면 포기하고 다시 시작하지 않음.", "레버를 고정하면 계속 기다림."],
+                "en": ["The signal holds for 5 flashes.", "If it clears in time the lane change starts; if not, the request is dropped and does not restart.", "With the lever latched it keeps waiting."]},
+      "unk": {"ko": ["5회 대기 동작을 판정한 기록 없음."], "en": ["No record judging the 5-flash wait."]}
+    },
+    "16": {
+      "pre": {"ko": ["CAN-FD 차. P단 정차에서 합니다(설정은 기어·속도와 상관없이 동작).", "2인 1조: 한 명은 차 밖에서 램프 확인.", "CanfdBlinkerControl=0 (켜져 있으면 아무것도 안 보냄 — 끄고 재부팅)."],
+              "en": ["CAN-FD car. Do it parked in P (the setting works in any gear and speed).", "Two people: one outside watching the lamps.", "CanfdBlinkerControl=0 (while on, nothing is sent; turn it off and reboot)."]},
+      "set": [
+        {"key": "CanfdBlinkerMenuTest", "ko": "1 (왼쪽) / 2 (오른쪽) → 끝나면 0", "en": "1 (left) / 2 (right), then 0"},
+        {"key": "CanfdBlinkerControl", "ko": "0", "en": "0"}
+      ],
+      "steps": {"ko": ["P단에서 1(왼쪽)로 바꿉니다.", "관찰자가 앞·뒤·사이드 램프를 봅니다.", "0으로 돌린 뒤 2(오른쪽)로 반복합니다.", "끝나면 꼭 0. 켜 두는 동안 주차보조·어라운드뷰가 동작하지 않을 수 있음. 시동만 껐다 켜면 값이 남음."],
+                "en": ["In P, set 1 (left).", "The observer watches the front, rear and side lamps.", "Set 0, then repeat with 2 (right).", "Always finish with 0. While on, parking assist and surround view may not work. A key cycle alone keeps the value."]},
+      "check": {"ko": ["외부 깜빡이 점등(영상).", "계기판 표시.", "CAN 오류·화면 경고 없음."],
+                "en": ["Exterior signal lights (video).", "Cluster shows it.", "No CAN error or on-screen warning."]},
+      "unk": {"ko": ["이 시험이 송신 방식(CanfdBlinkerKickMode)을 따르는지 설정 설명에 없음(미확인). 투싼 HDA1은 피기백으로 점등(11-12)."], "en": ["The setting description does not say whether this test follows the send mode (CanfdBlinkerKickMode); unconfirmed. The Tucson HDA1 lit with piggyback (11-12)."]}
+    },
+    "17": {
+      "pre": {"ko": ["일반 CAN 차(CGW1 0x541). CAN-FD 차에서는 아무것도 보내지 않음.", "P단·정차·제어 해제. 차 밖 관찰자 1명."],
+              "en": ["Classic-CAN car (CGW1 0x541). Nothing is sent on CAN-FD cars.", "P, stopped, not engaged. One observer outside."]},
+      "set": [
+        {"key": "PalisadeBlinkerTest", "ko": "1 (왼쪽) / 2 (오른쪽). 3/4는 +0x5B6 (K5 시험용)", "en": "1 (left) / 2 (right); 3/4 add 0x5B6 (K5 test)"}
+      ],
+      "steps": {"ko": ["P단에서 1로 바꿉니다. 최대 3초 보냅니다.", "다시 하려면 0으로 바꾼 뒤 선택합니다.", "2로 반복합니다.", "계기판만 켜지는 차는 3/4도 시험합니다(순정 0x5B6이 없는 차는 안 보냄)."],
+                "en": ["In P, set 1. It sends for up to 3 s.", "To repeat, set 0 first, then select again.", "Repeat with 2.", "If only the cluster reacts, also try 3/4 (cars without stock 0x5B6 send nothing)."]},
+      "check": {"ko": ["외부 깜빡이 점등 — 차 밖 영상으로만 판정.", "계기판·BVM만 반응하면 실패(K5 DL3·DH 사례).", "버스 오류 없음."],
+                "en": ["Exterior signal lights: judge only by an outside video.", "Cluster and BVM alone is a failure (K5 DL3, DH).", "No bus errors."]},
+      "unk": {"ko": ["K5 3/4(0x5B6 함께 송신) 결과 기록 없음."], "en": ["No record of the K5 3/4 result (with 0x5B6)."]}
+    },
+    "18": {
+      "pre": {"ko": ["CAN-FD SPAS 차, 0x3C1 8바이트, 주차 ECU가 응답하는 차. 3~18은 I5 PE 전용.", "P·속도 0·제어 비활성.", "13번(CanfdBlinkerControl)=1 + 재부팅."],
+              "en": ["CAN-FD SPAS car, 8-byte 0x3C1, parking ECU that answers. Values 3-18 are I5 PE only.", "P, speed 0, not engaged.", "Setting 13 (CanfdBlinkerControl)=1 and a reboot."]},
+      "set": [
+        {"key": "CanfdBlinkerControl", "ko": "1 → 재부팅", "en": "1, then reboot"},
+        {"key": "CanfdBlinkerTest", "ko": "1 (왼쪽) / 2 (오른쪽) → 0", "en": "1 (left) / 2 (right), then 0"}
+      ],
+      "steps": {"ko": ["13번을 켜고 재부팅합니다.", "P단 정차에서 1을 고릅니다(ECU 응답 확인 후 연속 깜빡이).", "0으로 취소한 뒤 2로 반복합니다.", "끝나면 CanfdBlinkerControl을 0으로 돌리고 재부팅합니다."],
+                "en": ["Turn on 13 and reboot.", "Parked in P, pick 1 (continuous signal after the ECU answers).", "Cancel with 0, then repeat with 2.", "Afterwards set CanfdBlinkerControl to 0 and reboot."]},
+      "check": {"ko": ["외부 깜빡이 점등.", "ECU 응답이 없으면 시작하지 않음 — 그 자체가 결과(❌)."],
+                "en": ["Exterior signal lights.", "Without an ECU answer it never starts; that is itself the result (❌)."]},
+      "unk": {"ko": ["응답한 차가 아직 없음."], "en": ["No car has answered yet."]}
+    },
+    "19": {
+      "pre": {"ko": ["CAN-FD 차, 0x3C1 레버 메시지가 8바이트인 차.", "P단 정차에서 합니다. 2인 1조(주행 중에도 동작)."],
+              "en": ["CAN-FD car with an 8-byte 0x3C1 stalk message.", "Do it parked in P. Two people (it also works while driving)."]},
+      "set": [
+        {"key": "CanfdBlinkerStalk", "ko": "1/2 유지, 3/4 탭 → 끝나면 0", "en": "1/2 hold, 3/4 tap, then 0"}
+      ],
+      "steps": {"ko": ["P단에서 1(왼쪽 유지)을 고릅니다.", "관찰자가 램프를 봅니다.", "0 → 2, 3, 4 순서로 반복합니다.", "끝나면 0. 재부팅하면 0."],
+                "en": ["In P, pick 1 (left hold).", "The observer watches the lamps.", "Go 0, then 2, 3, 4 in turn.", "Finish with 0. A reboot resets it to 0."]},
+      "check": {"ko": ["외부 깜빡이 점등.", "BVM만 뜨면 실패(투싼 사례)."],
+                "en": ["Exterior signal lights.", "BVM alone is a failure (Tucson)."]},
+      "unk": {"ko": ["시험한 차는 전부 실패. 차체 제어기가 다른 버스의 레버 신호를 보는 구조로 추정(미확인)."], "en": ["Every tested car failed. Presumably the body controller reads the stalk on another bus (unconfirmed)."]}
+    },
+    "20": {
+      "pre": {"ko": ["comma four, CAN-FD HDA2 카메라 SCC 구성.", "P·정지·제어 비활성.", "SPAS 사용(13)·Kick·깜빡이·조향 시험은 모두 끔(13을 껐으면 재부팅)."],
+              "en": ["comma four on a CAN-FD HDA2 camera-SCC car.", "P, stopped, not engaged.", "SPAS use (13), Kick, blinker and steering tests all off (reboot if you just turned 13 off)."]},
+      "set": [
+        {"key": "CanfdAprkDiag", "ko": "1 (한 번 실행, 끝나면 자동으로 0)", "en": "1 (runs once, returns to 0 by itself)"}
+      ],
+      "steps": {"ko": ["조건을 맞추고 1을 고릅니다.", "끝나면 자동으로 0이 됩니다.", "결과는 기기 params CanfdAprkDiagResult와 로그 canfd_aprk_diag에 남습니다(설정 설명)."],
+                "en": ["Meet the conditions and pick 1.", "It returns to 0 when done.", "The result goes to the device param CanfdAprkDiagResult and the canfd_aprk_diag log (setting description)."]},
+      "check": {"ko": ["주차 ECU 응답 유무(응답이 있어야 13·18 시험 가능).", "램프는 켜지지 않음(진단만)."],
+                "en": ["Whether the parking ECU answered (13 and 18 need an answer).", "No lamp lights (diagnostic only)."]},
+      "unk": {"ko": ["차주가 화면에서 결과를 읽는 방법 미확인 — 로그를 개발자에게 보냅니다.", "차량 응답 미확인(설정 설명)."], "en": ["How an owner reads the result on screen is unconfirmed; send the log to the developer.", "Vehicle response unconfirmed (setting description)."]}
+    }
+  }
+}

@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Turnlight 차종표</title>
+<meta name="description" content="현대·기아·제네시스 차종별 CarrotPilot 깜빡이(Turnlight) CAN 경로 동작 기록과 시험 방법">
+<style>
+  :root { --bg:#0f1115; --card:#181b22; --line:#2a2f3a; --text:#e8eaf0; --muted:#9aa3b2; --accent:#7aa2ff;
+          --ok:#2ecc71; --should:#f1c40f; --no:#e74c3c; --unk:#7f8796; --na:#3a3f4a; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.6 -apple-system, "Segoe UI", "Malgun Gothic", sans-serif; }
+  main { max-width:1200px; margin:0 auto; padding:24px 16px 64px; }
+  h1 { font-size:22px; margin:0 0 4px; } h2 { font-size:18px; margin:28px 0 8px; } h3 { font-size:15px; margin:0 0 4px; }
+  .sub { color:var(--muted); margin:0 0 12px; }
+  .bar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:8px 0 4px; }
+  .bar button { background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px; padding:6px 14px; cursor:pointer; font:inherit; }
+  .bar button.on { border-color:var(--accent); color:var(--accent); }
+  .bar span { color:var(--muted); font-size:13px; margin-left:auto; }
+  .legend { display:flex; flex-wrap:wrap; gap:14px; color:var(--muted); font-size:13px; margin:8px 0; }
+  .wrap { overflow-x:auto; border:1px solid var(--line); border-radius:12px; background:var(--card); }
+  table.m { border-collapse:collapse; width:100%; min-width:980px; font-size:14px; }
+  table.m th, table.m td { border-bottom:1px solid var(--line); padding:6px 6px; text-align:center; vertical-align:middle; }
+  table.m th { color:var(--muted); font-weight:600; background:var(--card); }
+  table.m .path { text-align:left; min-width:200px; position:sticky; left:0; background:var(--card); z-index:1; }
+  @media (max-width:600px) { table.m { min-width:820px; } table.m .path { min-width:130px; max-width:130px; } .path button span { display:none; } }
+  .sets { list-style:none; padding:0 !important; } .sets li { border-bottom:1px solid var(--line); padding:6px 0 !important; }
+  .path button { all:unset; cursor:pointer; display:block; }
+  .path button b { display:block; color:var(--text); } .path button span { color:var(--muted); font-size:12px; }
+  .path button:hover b, .path button:focus-visible b { color:var(--accent); text-decoration:underline; }
+  .c { display:inline-block; min-width:30px; padding:2px 6px; border-radius:6px; font-weight:700; }
+  button.c { border:1px solid transparent; cursor:pointer; font:inherit; font-weight:700; }
+  button.c:hover, button.c:focus-visible { border-color:var(--accent); outline:none; }
+  .ok { background:rgba(46,204,113,.18); color:var(--ok); } .should { background:rgba(241,196,15,.16); color:var(--should); }
+  .no { background:rgba(231,76,60,.16); color:var(--no); } .unk { background:rgba(127,135,150,.16); color:var(--unk); } .na { background:transparent; color:var(--na); }
+  .cards { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:12px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; }
+  .card p { margin:6px 0 0; color:#cfd5e1; font-size:14px; }
+  .tag { font-size:12px; color:var(--muted); }
+  code { background:#232834; padding:1px 5px; border-radius:4px; font-size:13px; word-break:break-all; }
+  .tip { color:var(--muted); font-size:13px; margin-top:8px; }
+  ul.sum { margin:6px 0 0; padding-left:18px; } ul.sum li { margin:2px 0; }
+  dialog { background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:14px; padding:0; width:min(720px, calc(100vw - 24px)); max-height:calc(100vh - 32px); }
+  dialog::backdrop { background:rgba(0,0,0,.6); }
+  .dh { display:flex; align-items:flex-start; gap:12px; padding:14px 16px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--card); }
+  .dh h3 { flex:1; font-size:16px; margin:0; }
+  .dh button { background:none; border:1px solid var(--line); color:var(--text); border-radius:8px; padding:2px 10px; cursor:pointer; font:inherit; }
+  .db { padding:4px 16px 16px; font-size:14px; }
+  .db h4 { margin:16px 0 4px; font-size:14px; color:var(--accent); }
+  .db ul, .db ol { margin:4px 0; padding-left:20px; } .db li { margin:2px 0; }
+  .db table { border-collapse:collapse; width:100%; font-size:13px; } .db td, .db th { border-bottom:1px solid var(--line); padding:5px 6px; text-align:left; vertical-align:top; }
+  .db th { color:var(--muted); font-weight:600; }
+  .st { display:flex; gap:10px; align-items:flex-start; background:#11141a; border:1px solid var(--line); border-radius:10px; padding:10px; margin-top:12px; }
+  .unk-t { color:var(--should); }
+  .rel button { background:#11141a; color:var(--text); border:1px solid var(--line); border-radius:6px; padding:2px 8px; margin:2px 4px 2px 0; cursor:pointer; font:inherit; font-size:13px; }
+  .grid10 { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:4px 12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1 id="t-title"></h1>
+  <p class="sub" id="t-sub"></p>
+  <div class="bar">
+    <button id="b-ko" class="on" onclick="setLang('ko')">한국어</button>
+    <button id="b-en" onclick="setLang('en')">English</button>
+    <span id="updated"></span>
+  </div>
+  <div class="legend" id="legend"></div>
+
+  <h2 id="t-matrix"></h2>
+  <div class="wrap"><table class="m" id="matrix"></table></div>
+  <p class="tip" id="t-tip"></p>
+
+  <h2 id="t-settings"></h2>
+  <div class="wrap"><table class="m" id="settings"></table></div>
+  <p class="tip" id="t-tip2"></p>
+
+  <h2 id="t-paths"></h2>
+  <div class="cards" id="paths"></div>
+
+  <h2 id="t-cars"></h2>
+  <div class="cards" id="cars"></div>
+
+  <h2 id="t-src"></h2>
+  <p class="tip" id="src"></p>
+</main>
+<dialog id="dlg" aria-labelledby="dlg-t">
+  <div class="dh"><h3 id="dlg-t"></h3><button onclick="dlg.close()" id="dlg-x"></button></div>
+  <div class="db" id="dlg-b"></div>
+</dialog>
+<script>
+const T = {
+  title: {ko:'Turnlight · 차종별 CAN 송신 경로', en:'Turnlight · CAN send path by car'},
+  sub: {ko:'포팅 차량마다 어떤 CAN 경로로 깜빡이·비상등이 켜지는지, 차주 로그와 보고 기록으로 정리했습니다. 칸이나 이름을 누르면 근거와 시험 방법이 열립니다.',
+        en:'For each ported car, which CAN path lights the turn signals or hazards, from owner logs and reports. Click a cell or a name for the evidence and how to test it.'},
+  matrix: {ko:'1. 경로 × 차종', en:'1. Path × car'},
+  tip: {ko:'Kick·리모컨 깜빡이는 차에 따라 SPAS2(CAN-FD) 또는 CGW1(일반 CAN) 경로를 자동으로 탑니다. EV9·쏘나타 HDA1·싼타페 MX5 HEV는 기록이 거의 없어 표에서 뺐습니다(쏘나타는 다른 브랜치에서 SPAS2 점등 보고).',
+        en:'Kick and the remote turn signal take the SPAS2 (CAN-FD) or CGW1 (classic CAN) path by car. EV9, Sonata HDA1 and Santa Fe MX5 HEV have almost no records and are left out (Sonata lit via SPAS2 on another branch).'},
+  settings: {ko:'2. 설정 × 차종', en:'2. Setting × car'},
+  tip2: {ko:'설정은 Carrot Web 설정 메뉴 Joongyu Lab › Turnlight에 있습니다. 8~11번은 I5 PE + 외부 장치 전용입니다.',
+         en:'The settings live in the Carrot Web settings menu under Joongyu Lab › Turnlight. Settings 8-11 are I5 PE plus external device only.'},
+  paths: {ko:'3. 경로별 원리', en:'3. How each path works'},
+  cars: {ko:'4. 차종별 요약', en:'4. Per car'},
+  src: {ko:'근거', en:'Sources'},
+  path: {ko:'CAN 송신 경로', en:'CAN send path'}, setting: {ko:'설정', en:'Setting'},
+  updated: {ko:'갱신 ', en:'Updated '}, close: {ko:'닫기', en:'Close'},
+  h_status: {ko:'현재 상태', en:'Status'}, h_pre: {ko:'전제', en:'Prerequisites'}, h_set: {ko:'켤 설정', en:'Settings to change'},
+  h_steps: {ko:'순서', en:'Steps'}, h_check: {ko:'확인할 것', en:'What to check'}, h_rec: {ko:'기록할 것', en:'What to record'},
+  h_unk: {ko:'미확인', en:'Unconfirmed'}, h_rel: {ko:'관련 설정', en:'Related settings'}, h_cars: {ko:'차종별 상태', en:'Status by car'},
+  th_rng: {ko:'범위', en:'range'}, th_def: {ko:'기본', en:'default'}, th_menu: {ko:'메뉴', en:'Menu'},
+  car: {ko:'차종', en:'Car'}, hda_unk: {ko:'HDA 설정 미확인', en:'HDA setting unknown'},
+  na: {ko:'이 차종에는 해당 경로·설정이 없어 시험하지 않습니다.', en:'This path or setting does not apply to this car, so there is nothing to test.'},
+  test_of: {ko:'시험은 설정 ', en:'Tested with setting '}, test_of2: {ko:'번으로 합니다.', en:'.'},
+  web: {ko:'Carrot Web 설정 › ', en:'Carrot Web settings › '},
+};
+const L = {ok:{ko:'동작 확인',en:'seen working'}, should:{ko:'조건 충족·결과 없음',en:'conditions met, no result yet'},
+           no:{ko:'안 됨',en:'does not work'}, unk:{ko:'기록 없음',en:'no record'}, na:{ko:'해당 플랫폼 아님',en:'other platform'}};
+const SYM = {ok:'✅', should:'△', no:'❌', unk:'?', na:'–'};
+let lang = 'ko', M = null, X = null;
+const dlg = document.getElementById('dlg');
+const t = k => T[k][lang];
+const tx = o => (o && typeof o === 'object' && lang in o) ? o[lang] : o;
+function esc(s){ return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function setLang(l){ lang=l; document.getElementById('b-ko').className=l==='ko'?'on':''; document.getElementById('b-en').className=l==='en'?'on':''; render(); if (dlg.open && last) showTest(...last); }
+const carName = c => lang==='ko' ? c.ko : c.en;
+function note(cell){ return (lang==='ko' ? cell[1] : cell[2]) || L[cell[0]][lang]; }
+function chip(cell, attrs){ const lab = cell[3] || SYM[cell[0]]; return attrs ? `<button class="c ${cell[0]}" ${attrs}>${esc(lab)}</button>` : `<span class="c ${cell[0]}">${esc(lab)}</span>`; }
+function table(id, rows, kind){
+  let h = `<tr><th class="path">${t(kind)}</th>${M.cars.map(c=>`<th>${esc(carName(c))}</th>`).join('')}</tr>`;
+  for (const r of rows) {
+    const head = kind==='path' ? `<b>${esc(tx(r.name))}</b><span>${esc(r.plat)} · ${esc(tx(r.uses))}</span>`
+                               : `<b>${esc(r.id)}. ${esc(tx(r.name))}</b><span>${r.keys.map(esc).join(' · ')}</span>`;
+    h += `<tr><td class="path"><button onclick="showTest('${kind}','${r.id}')">${head}</button></td>` +
+      M.cars.map(c => { const cell = r.cells[c.id];
+        return `<td>${chip(cell, `onclick="showTest('${kind}','${r.id}','${c.id}')" title="${esc(note(cell))}" aria-label="${esc(tx(r.name))} · ${esc(carName(c))}: ${esc(L[cell[0]][lang])}"`)}</td>`; }).join('') + '</tr>';
+  }
+  document.getElementById(id).innerHTML = h;
+}
+function render(){
+  document.documentElement.lang = lang;
+  for (const k of ['title','sub','matrix','tip','settings','tip2','paths','cars','src']) document.getElementById('t-'+k).textContent = t(k);
+  document.getElementById('dlg-x').textContent = t('close');
+  if (!M) return;
+  document.getElementById('updated').textContent = t('updated') + M.updated;
+  document.getElementById('legend').innerHTML = Object.keys(L).map(k=>`<span><span class="c ${k}">${SYM[k]}</span> ${L[k][lang]}</span>`).join('');
+  table('matrix', M.paths, 'path');
+  table('settings', M.settings, 'setting');
+  document.getElementById('paths').innerHTML = M.paths.map(p=>`<div class="card"><h3>${esc(tx(p.name))}</h3><div class="tag">${esc(p.plat)} · ${esc(tx(p.uses))}</div><p>${esc(tx(p.how))}</p></div>`).join('');
+  document.getElementById('cars').innerHTML = M.cars.map(c=>`<div class="card"><h3>${esc(carName(c))}</h3><ul class="sum">${M.summary[c.id][lang].map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('');
+  document.getElementById('src').textContent = tx(M.sources);
+}
+const list = (arr, tag='ul') => arr && arr.length ? `<${tag}>${arr.map(x=>`<li>${esc(x)}</li>`).join('')}</${tag}>` : '';
+function setTable(sets){
+  return '<ul class="sets">' + sets.map(s => {
+    const p = X.params[s.key];
+    return `<li><code>${esc(s.key)}</code> = <b>${esc(tx(s))}</b><br><span class="tag">${esc(tx(p))} · ${t('th_rng')} ${p.min}~${p.max} · ${t('th_def')} ${p.def}<br>${t('th_menu')}: ${esc(t('web') + tx(X.menus[p.menu]))}</span></li>`;
+  }).join('') + '</ul>';
+}
+let last = null;
+function showTest(kind, id, carId){
+  last = [kind, id, carId];
+  const row = (kind==='path' ? M.paths : M.settings).find(r => r.id === id);
+  const car = carId ? M.cars.find(c => c.id === carId) : null;
+  const testId = kind==='path' ? row.test : row.id;
+  const test = X.tests[testId];
+  const rowName = kind==='path' ? tx(row.name) : `${row.id}. ${tx(row.name)}`;
+  document.getElementById('dlg-t').textContent = car ? `${rowName} · ${carName(car)}` : rowName;
+  let h = '';
+  if (car) {
+    const cell = row.cells[car.id];
+    h += `<h4>${t('h_status')}</h4><div class="st">${chip(cell)}<div><b>${esc(L[cell[0]][lang])}</b>${note(cell) !== L[cell[0]][lang] ? '<br>' + esc(note(cell)) : ''}</div></div>`;
+    if (cell[0] === 'na') { document.getElementById('dlg-b').innerHTML = h + `<p>${t('na')}</p>`; show(); return; }
+  } else {
+    h += `<h4>${t('h_cars')}</h4><div class="grid10">${M.cars.map(c => { const cell=row.cells[c.id];
+      return `<div>${chip(cell, `onclick="showTest('${kind}','${row.id}','${c.id}')"`)} ${esc(carName(c))}</div>`; }).join('')}</div>`;
+  }
+  if (kind==='path') h += `<p class="tip">${t('test_of')}${esc(row.test)}${t('test_of2')}</p>`;
+  const rel = kind==='path' ? [row.test, ...row.related] : [];
+  if (rel.length) h += `<div class="rel"><b>${t('h_rel')}</b>: ${rel.map(r => `<button onclick="showTest('setting','${r}'${car?`,'${car.id}'`:''})">${esc(r)}. ${esc(tx(M.settings.find(s=>s.id===r).name))}</button>`).join('')}</div>`;
+  const pre = car ? [`${t('car')}: ${carName(car)} (${car.bus}${car.hda ? ' · ' + (car.hda==='?' ? t('hda_unk') : car.hda) : ''})`, ...test.pre[lang]] : test.pre[lang];
+  h += `<h4>${t('h_pre')}</h4>${list(pre)}`;
+  h += `<h4>${t('h_set')}</h4>${setTable(test.set)}`;
+  h += `<h4>${t('h_steps')}</h4>${list(test.steps[lang], 'ol')}`;
+  h += `<h4>${t('h_check')}</h4>${list(test.check[lang])}<p class="tip">${esc(tx(X.lamp_log))}</p>`;
+  h += `<h4>${t('h_rec')}</h4>${list(X.record[lang])}`;
+  const unk = [...(test.unk ? test.unk[lang] : [])];
+  if (car && row.cells[car.id][0] === 'unk') unk.unshift(lang==='ko' ? '이 칸은 아직 결과 기록이 없습니다.' : 'This cell has no recorded result yet.');
+  if (unk.length) h += `<h4 class="unk-t">${t('h_unk')}</h4>${list(unk)}`;
+  document.getElementById('dlg-b').innerHTML = h;
+  show();
+}
+function show(){ if (!dlg.open) dlg.showModal(); dlg.querySelector('.db').scrollTop = 0; dlg.scrollTop = 0; }
+dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+render();
+Promise.all(['data/matrix.json','data/tests.json'].map(u => fetch(u).then(r => r.json())))
+  .then(([m, x]) => { M = m; X = x; render(); })
+  .catch(e => { document.getElementById('legend').textContent = 'data load failed: ' + e; });
+</script>
+</body>
+</html>

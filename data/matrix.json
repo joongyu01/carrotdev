@@ -1,0 +1,286 @@
+{
+  "updated": "2026-11-17",
+  "note": "cells: {차 id: [상태, 한국어 근거, English evidence]}. 상태 ok ✅ · should △ · no ❌ · unk ? · na –. 근거가 빈 문자열이면 상태 기본 문구를 쓴다. label이 있으면 기호 대신 그 글자를 보여 준다.",
+  "cars": [
+    {"id": "i5pe", "ko": "아이오닉5 PE", "en": "I5 PE", "bus": "CAN-FD", "hda": "HDA2"},
+    {"id": "ioniq9", "ko": "아이오닉9", "en": "IONIQ 9", "bus": "CAN-FD", "hda": "HDA2"},
+    {"id": "gn7", "ko": "그랜저 GN7", "en": "GN7", "bus": "CAN-FD", "hda": "?"},
+    {"id": "ev4", "ko": "EV4", "en": "EV4", "bus": "CAN-FD", "hda": "?"},
+    {"id": "ev5", "ko": "EV5", "en": "EV5", "bus": "CAN-FD", "hda": "HDA2"},
+    {"id": "gv80", "ko": "GV80", "en": "GV80", "bus": "CAN-FD", "hda": "HDA2"},
+    {"id": "tucson", "ko": "투싼 HDA1", "en": "Tucson HDA1", "bus": "CAN-FD", "hda": "HDA1"},
+    {"id": "palisade", "ko": "팰리세이드", "en": "Palisade", "bus": "CAN", "hda": ""},
+    {"id": "k5", "ko": "K5 DL3", "en": "K5 DL3", "bus": "CAN", "hda": ""},
+    {"id": "dh", "ko": "제네시스 DH", "en": "DH", "bus": "CAN", "hda": ""}
+  ],
+  "paths": [
+    {
+      "id": "spas2", "test": "16", "related": ["1", "2", "3"],
+      "name": {"ko": "SPAS2 0x16A 깜빡이 명령", "en": "SPAS2 0x16A blinker command"}, "plat": "CAN-FD",
+      "uses": {"ko": "1~3 Kick · 16 명령 시험 · 리모컨 깜빡이", "en": "1-3 Kick · 16 command test · remote turn signal"},
+      "how": {"ko": "주차보조(SPAS) 메시지 0x16A에는 깜빡이 명령 칸(BLINKER_CONTROL: 3 왼쪽, 4 오른쪽)이 있습니다. comma가 이 칸을 채운 0x16A를 CAN-FD 버스 0에 보냅니다. 기본 모드 1은 순정 프레임 바로 뒤에 붙여 보내고(피기백), 2/3은 직접 보냅니다. 차체 모듈이 버스 0의 이 명령을 받아들이는 차에서만 램프가 켜집니다. HDA1(CanfdHDA2=0)은 모드 1만 나갑니다.",
+              "en": "The parking-assist (SPAS) message 0x16A has a blinker command field (BLINKER_CONTROL: 3 left, 4 right). comma sends a 0x16A with that field on CAN-FD bus 0. The default mode 1 sends it right behind each stock frame (piggyback); modes 2/3 send it directly. The lamp lights only on cars whose body module accepts this command from bus 0. On HDA1 (CanfdHDA2=0) only mode 1 goes out."},
+      "cells": {
+        "i5pe": ["ok", "주행 Kick 점등(10-26~30, 직송 100 Hz)", "Driving Kick lit (10-26..30, direct 100 Hz)"],
+        "ioniq9": ["ok", "주행 Kick 오른쪽 1.7 s 점등(10-28, measurements §29)", "Driving Kick lit right 1.7 s (10-28, measurements §29)"],
+        "gn7": ["ok", "10-27 옛 직송으로 3회 점등, 3회째 bus-off(§50). 지금 기본(모드 1) 기록 없음", "Lit 3 times with the old direct send (10-27), bus-off on the 3rd (§50). No record with today's default (mode 1)"],
+        "ev4": ["ok", "P단 메뉴 시험 좌·우 점등(10-26, 직송 100 Hz)", "Parked menu test lit left and right (10-26, direct 100 Hz)"],
+        "ev5": ["should", "HDA2·카메라 SCC, 결과 기록 없음", "HDA2 with camera SCC, no result yet"],
+        "gv80": ["no", "피기백·직송 모두 램프 피드백 변화 0(11-14 확정)", "Piggyback and direct both: no lamp feedback change (confirmed 11-14)"],
+        "tucson": ["ok", "P단 메뉴 시험 피기백 점등(11-12, §56). 수정 f763fd21 뒤 재시험 OK. HDA1이라 모드 1만 의미 있음", "Parked menu test lit with piggyback (11-12, §56), OK again after fix f763fd21. HDA1, so only mode 1 matters"],
+        "palisade": ["na", "", ""], "k5": ["na", "", ""], "dh": ["na", "", ""]
+      }
+    },
+    {
+      "id": "cgw1", "test": "17", "related": ["1", "2", "3"],
+      "name": {"ko": "CGW1 0x541 깜빡이 상태", "en": "CGW1 0x541 turn-signal state"}, "plat": "classic CAN",
+      "uses": {"ko": "1~3 Kick · 17 CGW1 시험 · 리모컨 깜빡이", "en": "1-3 Kick · 17 CGW1 test · remote turn signal"},
+      "how": {"ko": "일반 CAN 차의 게이트웨이 메시지 CGW1(0x541)에는 레버 방향과 램프 상태 비트가 있습니다. comma가 순정 프레임을 복사해 레버 쪽 비트와 램프 비트(0.35 s 점멸)를 바꿔 보냅니다. 차체가 이 프레임으로 램프를 켜는 차가 있고, 계기판·BVM만 반응하는 차가 있습니다.",
+              "en": "On classic-CAN cars the gateway message CGW1 (0x541) carries the lever side and lamp-state bits. comma copies the stock frame and changes the lever bit and the lamp bit (0.35 s flashing). On some cars the body lights the lamp from it; on others only the cluster and BVM react."},
+      "cells": {
+        "i5pe": ["na", "", ""], "ioniq9": ["na", "", ""], "gn7": ["na", "", ""], "ev4": ["na", "", ""], "ev5": ["na", "", ""], "gv80": ["na", "", ""], "tucson": ["na", "", ""],
+        "palisade": ["ok", "P단 시험 외부 램프 점등 영상(11-03). 리모컨 차로변경 깜빡이 동작(차주 보고)", "Parked test lit the exterior lamp on video (11-03); remote lane-change signal works (owner report)"],
+        "k5": ["no", "계기판·BVM만 반응, 외부 램프 안 켜짐(12 V·카메라 로그로 확정, 11-14)", "Only cluster and BVM react, exterior lamp stays off (confirmed by 12 V and camera logs, 11-14)"],
+        "dh": ["no", "계기판만 반응, 앞 램프 안 켜짐(차주 육안·카메라 로그)", "Only the cluster reacts, front lamp stays off (owner and camera log)"]
+      }
+    },
+    {
+      "id": "hazard", "test": "6", "related": [],
+      "name": {"ko": "0x1EA bit 104 비상등", "en": "0x1EA bit 104 hazard lights"}, "plat": "CAN-FD HDA2",
+      "uses": {"ko": "6 비상등 · 리모컨 비상등", "en": "6 hazard test · remote hazard"},
+      "how": {"ko": "카메라가 보내는 계기판 메시지 0x1EA(ADRV)를 comma가 다시 만들어 보낼 때 bit 104를 켭니다. 아이오닉5 PE에서는 이 비트가 차 밖 비상등을 켰습니다. panda가 0x1EA 송신을 HDA2 모드(CanfdHDA2=1)에서만 허용하고, 카메라가 0x1EA를 보내는 차여야 합니다. 다른 차에서는 bit 104의 뜻이 확인되지 않았습니다.",
+              "en": "When comma rebuilds the camera's cluster message 0x1EA (ADRV) it sets bit 104. On the Ioniq 5 PE that bit turned on the exterior hazard lights. panda passes 0x1EA only in HDA2 mode (CanfdHDA2=1), and the camera must send 0x1EA. What bit 104 does on other cars is unconfirmed."},
+      "cells": {
+        "i5pe": ["ok", "P단 108/108 점등(10-29, 셀 129 시험)", "Lit 108/108 when parked (10-29, cell 129 test)"],
+        "ioniq9": ["unk", "0x1EA 존재 기록 없음", "No record of 0x1EA"],
+        "gn7": ["unk", "0x1EA 존재 기록 없음", "No record of 0x1EA"],
+        "ev4": ["unk", "0x1EA 존재 기록 없음", "No record of 0x1EA"],
+        "ev5": ["should", "HDA2, 카메라 0x1EA 있음, bit 104 의미 미확인", "HDA2, camera sends 0x1EA, bit 104 meaning unknown"],
+        "gv80": ["should", "HDA2 모드·카메라 0x1EA 있음, bit 104 의미 미확인", "HDA2 mode, camera sends 0x1EA, bit 104 meaning unknown"],
+        "tucson": ["no", "카메라에 0x1EA 없음 + HDA1", "Camera has no 0x1EA, and HDA1"],
+        "palisade": ["na", "", ""], "k5": ["na", "", ""], "dh": ["na", "", ""]
+      }
+    },
+    {
+      "id": "stalk", "test": "19", "related": [],
+      "name": {"ko": "0x3C1 레버 재생", "en": "0x3C1 lever replay"}, "plat": "CAN-FD",
+      "uses": {"ko": "19 레버 재생", "en": "19 lever replay"},
+      "how": {"ko": "운전석 레버 메시지 0x3C1(8바이트, CRC 포함)을 흉내 내 버스 0에 보냅니다. 시험한 차는 첫 프레임부터 반응이 없었습니다. 진짜 레버 신호가 다른 버스에서 와서 게이트웨이가 한 방향으로만 넘기는 구조로 추정합니다(미확인).",
+              "en": "Imitates the stalk message 0x3C1 (8 bytes with CRC) on bus 0. Every tested car ignored it from the first frame. Presumably the real stalk signal comes from another bus and the gateway forwards only one way (unconfirmed)."},
+      "cells": {
+        "i5pe": ["no", "재생 700프레임에도 램프 무반응", "No lamp after 700 replayed frames"],
+        "ioniq9": ["unk", "PT 버스 0x3C1 기록 없음", "No record of 0x3C1 on the PT bus"],
+        "gn7": ["unk", "기록 없음", "No record"],
+        "ev4": ["no", "EV4의 0x3C1은 24바이트·내용 고정이라 해당 없음", "EV4 0x3C1 is 24 bytes and constant: not applicable"],
+        "ev5": ["unk", "기록 없음", "No record"],
+        "gv80": ["no", "10-28·11-12·11-14 모두 램프 0", "No lamp on 10-28, 11-12, 11-14"],
+        "tucson": ["no", "깜빡이 안 켜짐, BVM만 뜸(차주 보고)", "No turn signal, only BVM (owner report)"],
+        "palisade": ["na", "", ""], "k5": ["na", "", ""], "dh": ["na", "", ""]
+      }
+    },
+    {
+      "id": "aprk", "test": "20", "related": ["13", "18"],
+      "name": {"ko": "주차ECU(APRK) 경유 SPAS", "en": "SPAS via the parking ECU (APRK)"}, "plat": "CAN-FD",
+      "uses": {"ko": "13 SPAS 사용 · 18 정차 SPAS 시험 · 20 진단", "en": "13 SPAS use · 18 parked SPAS test · 20 diagnostic"},
+      "how": {"ko": "carrot-wip(주인) 방식입니다. 주차 ECU에 진단 요청(0x7B1)을 보내 멈추게 한 뒤 comma가 SPAS 메시지를 대신 보냅니다. 주차 ECU가 응답해야 시작합니다. 시험한 차는 모두 응답하지 않았습니다. 20번 진단은 응답 여부만 보고 램프는 켜지 않습니다.",
+              "en": "The carrot-wip (owner) method. comma asks the parking ECU to pause with a diagnostic request (0x7B1), then sends the SPAS messages itself. It starts only if the parking ECU answers; none of the tested cars answered. Setting 20 only checks for the answer and lights nothing."},
+      "cells": {
+        "i5pe": ["no", "0x7B1 요청 111회, 응답 0", "111 requests to 0x7B1, 0 answers"],
+        "ioniq9": ["no", "0x7xx 응답 0(10-28)", "0 answers from 0x7xx (10-28)"],
+        "gn7": ["no", "0x7B1 12회, 응답 0", "12 requests, 0 answers"],
+        "ev4": ["no", "무응답 + 0x3C1 24바이트라 시작 못 함(11-16)", "No answer, and 24-byte 0x3C1, so it never starts (11-16)"],
+        "ev5": ["unk", "기록 없음", "No record"],
+        "gv80": ["no", "SPAS1 0x165 없음 + 무응답", "No SPAS1 0x165, and no answer"],
+        "tucson": ["unk", "기록 없음", "No record"],
+        "palisade": ["na", "", ""], "k5": ["na", "", ""], "dh": ["na", "", ""]
+      }
+    },
+    {
+      "id": "ext", "test": "7", "related": ["8~11", "12"],
+      "name": {"ko": "외부 장치 (Jetson USB2CAN · B1)", "en": "External device (Jetson USB2CAN · B1)"}, "plat": "device",
+      "uses": {"ko": "7~12", "en": "7-12"},
+      "how": {"ko": "comma가 아니라 별도 CAN 장치(Jetson의 USB2CAN, Carrot-B1 BLE 보드)가 레버 신호가 원래 흐르는 차체 버스에 0x3C1을 넣습니다. 8~11번은 아이오닉5 PE 전용입니다. 7·12번은 장치만 있으면 조건상 가능합니다. 지금까지 장착 기록은 없습니다.",
+              "en": "Not comma itself: a separate CAN device (the Jetson's USB2CAN or the Carrot-B1 BLE board) puts 0x3C1 on the body bus where the real stalk signal lives. Settings 8-11 are Ioniq 5 PE only; 7 and 12 work on other cars too if the device is fitted. No installation has been recorded so far."},
+      "cells": {
+        "i5pe": ["unk", "장착 기록 없음", "No device recorded"],
+        "ioniq9": ["no", "8~11은 I5 PE 전용. 7·12는 장착 기록 없음", "8-11 are I5 PE only; no device recorded for 7 and 12"],
+        "gn7": ["no", "8~11은 I5 PE 전용. 7·12는 장착 기록 없음", "8-11 are I5 PE only; no device recorded for 7 and 12"],
+        "ev4": ["no", "8~11은 I5 PE 전용. 7·12는 장착 기록 없음", "8-11 are I5 PE only; no device recorded for 7 and 12"],
+        "ev5": ["no", "8~11은 I5 PE 전용. 7·12는 장착 기록 없음", "8-11 are I5 PE only; no device recorded for 7 and 12"],
+        "gv80": ["no", "8~11은 I5 PE 전용. 7·12는 장착 기록 없음", "8-11 are I5 PE only; no device recorded for 7 and 12"],
+        "tucson": ["no", "8~11은 I5 PE 전용. 7·12는 장착 기록 없음", "8-11 are I5 PE only; no device recorded for 7 and 12"],
+        "palisade": ["no", "8~11은 I5 PE 전용. 7·12는 장착 기록 없음", "8-11 are I5 PE only; no device recorded for 7 and 12"],
+        "k5": ["no", "8~11은 I5 PE 전용. 7·12는 장착 기록 없음", "8-11 are I5 PE only; no device recorded for 7 and 12"],
+        "dh": ["no", "8~11은 I5 PE 전용. 7·12는 장착 기록 없음", "8-11 are I5 PE only; no device recorded for 7 and 12"]
+      }
+    }
+  ],
+  "settings": [
+    {"id": "1", "keys": ["CanfdBlinkerKick"], "name": {"ko": "Kick 자동", "en": "Kick auto"}, "cells": {
+      "i5pe": ["ok", "주행 Kick 점등(10-26~30, 직송 100 Hz). 기본 모드 1 주행 기록 없음", "Driving Kick lit (10-26..30, direct 100 Hz). No driving record with default mode 1"],
+      "ioniq9": ["ok", "주행 Kick 오른쪽 1.7 s 점등(10-28, §29)", "Driving Kick lit right 1.7 s (10-28, §29)"],
+      "gn7": ["ok", "각주 ¹: 10-27 옛 구현(직송 100 Hz)으로 3회 점등, 3회째 bus-off. 지금 기본(모드 1) 기록 없음", "Note ¹: lit 3 times with the old implementation (direct 100 Hz) on 10-27, bus-off on the 3rd. No record with today's default (mode 1)"],
+      "ev4": ["should", "P단 메뉴 시험(16번)은 점등. 주행 Kick은 미실행(10-26 키 꺼짐, 11-15 CanfdBlinkerControl=1이 막음, §61)", "Parked menu test (16) lit. Driving Kick never ran (key off on 10-26; CanfdBlinkerControl=1 blocked it on 11-15, §61)"],
+      "ev5": ["should", "", ""],
+      "gv80": ["no", "피기백·직송 모두 램프 피드백 변화 0(11-14)", "Piggyback and direct: no lamp feedback change (11-14)"],
+      "tucson": ["unk", "주행 Kick 기록 없음. P단 메뉴 시험(모드 1)만 점등(11-12, §56)", "No driving Kick record. Only the parked menu test (mode 1) lit (11-12, §56)"],
+      "palisade": ["ok", "각주 ²: 리모컨 차로변경 때 외부 깜빡이 점등(차주 보고, 「2회만」→「최대 3초쯤」). 운전자 선넘음 Kick은 미검증", "Note ²: exterior signal lit on remote lane changes (owner report, 'only twice' → 'up to about 3 s'). Driver line-crossing Kick unverified"],
+      "k5": ["no", "CGW1: 계기판·BVM만 반응, 외부 램프 안 켜짐(11-14)", "CGW1: only cluster and BVM react, exterior lamp off (11-14)"],
+      "dh": ["no", "CGW1: 계기판만 반응, 앞 램프 안 켜짐", "CGW1: only the cluster reacts, front lamp off"]
+    }},
+    {"id": "2", "keys": ["CanfdBlinkerKickMode"], "name": {"ko": "Kick 송신 방식", "en": "Kick send mode"}, "cells": {
+      "i5pe": ["ok", "각주 ³: 직송 100 Hz(모드 3)만 확인. 기본 모드 1(피기백) 주행 로그 없음. 모드 3은 버스 오류(§49)", "Note ³: only direct 100 Hz (mode 3) confirmed; no driving log with default mode 1 (piggyback). Mode 3 had bus errors (§49)"],
+      "ioniq9": ["ok", "각주 ³: 직송 100 Hz만 확인. 기본 모드 1 주행 로그 없음", "Note ³: only direct 100 Hz confirmed; no driving log with default mode 1"],
+      "gn7": ["should", "", ""], "ev4": ["should", "", ""], "ev5": ["should", "", ""],
+      "gv80": ["no", "모드 1·직송 모두 램프 변화 0(11-14)", "Mode 1 and direct: no lamp change (11-14)"],
+      "tucson": ["should", "HDA1이라 모드 1(피기백)만 나감. 0·2·3은 panda가 거부. 모드 1은 P단 메뉴 시험에서 점등(11-12, §56)", "HDA1: only mode 1 (piggyback) goes out; panda rejects 0, 2, 3. Mode 1 lit in the parked menu test (11-12, §56)", "1만"],
+      "palisade": ["should", "", ""],
+      "k5": ["no", "CGW1 경로 외부 램프 안 켜짐", "CGW1 path: exterior lamp stays off"],
+      "dh": ["unk", "직송 1/2 시험이 남음", "Direct-send test 1/2 still to do"]
+    }},
+    {"id": "3", "keys": ["CanfdBlinkerKickModelMode"], "name": {"ko": "모델 차로변경", "en": "Model lane change"}, "cells": {
+      "i5pe": ["should", "", ""], "ioniq9": ["should", "", ""], "gn7": ["should", "", ""], "ev4": ["should", "", ""], "ev5": ["should", "", ""],
+      "gv80": ["no", "Kick 경로(SPAS2) 램프 변화 0(11-14)", "Kick path (SPAS2): no lamp change (11-14)"],
+      "tucson": ["unk", "", ""],
+      "palisade": ["ok", "각주 ²: 리모컨 차로변경 때 외부 깜빡이 점등(차주 보고, 11-14)", "Note ²: exterior signal lit on remote lane changes (owner report, 11-14)"],
+      "k5": ["no", "CGW1 경로 외부 램프 안 켜짐", "CGW1 path: exterior lamp stays off"],
+      "dh": ["no", "CGW1 경로 외부 램프 안 켜짐", "CGW1 path: exterior lamp stays off"]
+    }},
+    {"id": "4", "keys": ["TunnelLaneChangeHold"], "name": {"ko": "터널 보류", "en": "Tunnel hold"}, "cells": {
+      "i5pe": ["should", "", ""], "ioniq9": ["unk", "", ""], "gn7": ["unk", "", ""], "ev4": ["unk", "", ""], "ev5": ["unk", "", ""],
+      "gv80": ["no", "정본 표 ❌. 판정 사유는 표에 없음(미확인). 이 차는 Kick이 램프를 켜지 못함(11-14)", "❌ in the source table; reason not given there (unconfirmed). Kick cannot light the lamp on this car (11-14)"],
+      "tucson": ["should", "", ""],
+      "palisade": ["no", "일반 CAN: 터널 판단은 CAN-FD 전용(설정 설명)", "Classic CAN: tunnel detection is CAN-FD only (setting description)"],
+      "k5": ["no", "일반 CAN: 터널 판단은 CAN-FD 전용(설정 설명)", "Classic CAN: tunnel detection is CAN-FD only (setting description)"],
+      "dh": ["no", "일반 CAN: 터널 판단은 CAN-FD 전용(설정 설명)", "Classic CAN: tunnel detection is CAN-FD only (setting description)"]
+    }},
+    {"id": "5", "keys": ["RoundaboutLaneChangeHold"], "name": {"ko": "회전교차로 보류", "en": "Roundabout hold"}, "cells": {
+      "i5pe": ["should", "", ""], "ioniq9": ["unk", "", ""], "gn7": ["unk", "", ""], "ev4": ["unk", "", ""], "ev5": ["should", "", ""],
+      "gv80": ["no", "정본 표 ❌. 판정 사유는 표에 없음(미확인). 이 차는 Kick이 램프를 켜지 못함(11-14)", "❌ in the source table; reason not given there (unconfirmed). Kick cannot light the lamp on this car (11-14)"],
+      "tucson": ["should", "", ""],
+      "palisade": ["no", "일반 CAN: 회전교차로 표지 판단은 CAN-FD 전용(설정 설명)", "Classic CAN: roundabout sign detection is CAN-FD only (setting description)"],
+      "k5": ["no", "일반 CAN: 회전교차로 표지 판단은 CAN-FD 전용(설정 설명)", "Classic CAN: roundabout sign detection is CAN-FD only (setting description)"],
+      "dh": ["no", "일반 CAN: 회전교차로 표지 판단은 CAN-FD 전용(설정 설명)", "Classic CAN: roundabout sign detection is CAN-FD only (setting description)"]
+    }},
+    {"id": "6", "keys": ["CanfdHazardTest"], "name": {"ko": "비상등", "en": "Hazard lights"}, "cells": {
+      "i5pe": ["ok", "P단 108/108 점등(10-29)", "Lit 108/108 when parked (10-29)"],
+      "ioniq9": ["unk", "0x1EA 존재 기록 없음", "No record of 0x1EA"],
+      "gn7": ["unk", "0x1EA 존재 기록 없음", "No record of 0x1EA"],
+      "ev4": ["unk", "0x1EA 존재 기록 없음", "No record of 0x1EA"],
+      "ev5": ["should", "HDA2, 카메라 0x1EA 있음, bit 104 의미 미확인", "HDA2, camera sends 0x1EA, bit 104 meaning unknown"],
+      "gv80": ["should", "HDA2 모드·카메라 0x1EA 있음, bit 104 의미 미확인", "HDA2 mode, camera sends 0x1EA, bit 104 meaning unknown"],
+      "tucson": ["no", "카메라에 0x1EA 없음 + HDA1", "Camera has no 0x1EA, and HDA1"],
+      "palisade": ["no", "CAN-FD HDA2 전용 설정", "CAN-FD HDA2 only"],
+      "k5": ["no", "CAN-FD HDA2 전용 설정", "CAN-FD HDA2 only"],
+      "dh": ["no", "CAN-FD HDA2 전용 설정", "CAN-FD HDA2 only"]
+    }},
+    {"id": "7", "keys": ["AutoBlinkerControl"], "name": {"ko": "외부장치 자동제어", "en": "External device auto"}, "cells": {
+      "i5pe": ["unk", "장착 기록 없음", "No device recorded"], "ioniq9": ["unk", "장착 기록 없음", "No device recorded"], "gn7": ["unk", "장착 기록 없음", "No device recorded"],
+      "ev4": ["unk", "장착 기록 없음", "No device recorded"], "ev5": ["unk", "장착 기록 없음", "No device recorded"], "gv80": ["unk", "장착 기록 없음", "No device recorded"],
+      "tucson": ["unk", "장착 기록 없음", "No device recorded"], "palisade": ["unk", "장착 기록 없음", "No device recorded"], "k5": ["unk", "장착 기록 없음", "No device recorded"],
+      "dh": ["unk", "장착 기록 없음", "No device recorded"]
+    }},
+    {"id": "8~11", "keys": ["ManualLaneChangeIndicator", "ManualTurnIndicator", "ModelDesireIndicator", "ModelPathIndicator"], "name": {"ko": "외부장치 수동·모델", "en": "External device manual & model"}, "cells": {
+      "i5pe": ["unk", "장착 기록 없음", "No device recorded"],
+      "ioniq9": ["no", "I5 PE 전용 설정", "I5 PE only"], "gn7": ["no", "I5 PE 전용 설정", "I5 PE only"], "ev4": ["no", "I5 PE 전용 설정", "I5 PE only"],
+      "ev5": ["no", "I5 PE 전용 설정", "I5 PE only"], "gv80": ["no", "I5 PE 전용 설정", "I5 PE only"], "tucson": ["no", "I5 PE 전용 설정", "I5 PE only"],
+      "palisade": ["no", "I5 PE 전용 설정", "I5 PE only"], "k5": ["no", "I5 PE 전용 설정", "I5 PE only"], "dh": ["no", "I5 PE 전용 설정", "I5 PE only"]
+    }},
+    {"id": "12", "keys": ["AutoTurnControlRightLaneChange"], "name": {"ko": "우회전 전 차선변경", "en": "Lane change before right turn"}, "cells": {
+      "i5pe": ["unk", "장착 기록 없음", "No device recorded"], "ioniq9": ["unk", "", ""], "gn7": ["unk", "", ""], "ev4": ["unk", "", ""], "ev5": ["unk", "", ""],
+      "gv80": ["unk", "", ""], "tucson": ["unk", "", ""],
+      "palisade": ["no", "CAN-FD(후측방 BSD) 전용 설정", "CAN-FD (rear BSD) only"],
+      "k5": ["no", "CAN-FD(후측방 BSD) 전용 설정", "CAN-FD (rear BSD) only"],
+      "dh": ["no", "CAN-FD(후측방 BSD) 전용 설정", "CAN-FD (rear BSD) only"]
+    }},
+    {"id": "13", "keys": ["CanfdBlinkerControl"], "name": {"ko": "SPAS 사용", "en": "SPAS use"}, "cells": {
+      "i5pe": ["no", "주차 ECU 0x7B1 요청 111회, 응답 0", "111 requests to the parking ECU (0x7B1), 0 answers"],
+      "ioniq9": ["no", "주차 ECU 응답 0(10-28)", "0 answers from the parking ECU (10-28)"],
+      "gn7": ["no", "0x7B1 12회, 응답 0", "12 requests, 0 answers"],
+      "ev4": ["no", "무응답 + 0x3C1 24바이트라 시작 못 함(11-16)", "No answer, and 24-byte 0x3C1, so it never starts (11-16)"],
+      "ev5": ["unk", "", ""],
+      "gv80": ["no", "SPAS1 0x165 없음 + 무응답", "No SPAS1 0x165, and no answer"],
+      "tucson": ["unk", "", ""],
+      "palisade": ["no", "CAN-FD 전용 설정", "CAN-FD only"], "k5": ["no", "CAN-FD 전용 설정", "CAN-FD only"], "dh": ["no", "CAN-FD 전용 설정", "CAN-FD only"]
+    }},
+    {"id": "14", "keys": ["BlinkerLatchedTurn"], "name": {"ko": "레버 회전 구분", "en": "Lever turn split"}, "cells": {
+      "i5pe": ["ok", "10-09 주행에서 레버 회전 53건 분류(BlinkerLatchedTurn=50, 06_dev/carrot-wip-dev.md)", "53 lever turns classified on the 10-09 drive (BlinkerLatchedTurn=50, 06_dev/carrot-wip-dev.md)"],
+      "ioniq9": ["unk", "", ""], "gn7": ["unk", "", ""],
+      "ev4": ["no", "EV4의 0x3C1은 24바이트·내용 고정이라 레버 위치를 못 읽음", "EV4 0x3C1 is 24 bytes and constant, so the lever position cannot be read"],
+      "ev5": ["unk", "", ""], "gv80": ["unk", "", ""], "tucson": ["unk", "", ""],
+      "palisade": ["no", "CAN-FD 0x3C1 전용 설정", "CAN-FD 0x3C1 only"], "k5": ["no", "CAN-FD 0x3C1 전용 설정", "CAN-FD 0x3C1 only"], "dh": ["no", "CAN-FD 0x3C1 전용 설정", "CAN-FD 0x3C1 only"]
+    }},
+    {"id": "15", "keys": ["LaneChangeLeverWait"], "name": {"ko": "원터치 5회 대기", "en": "One-touch 5-flash wait"}, "cells": {
+      "i5pe": ["should", "", ""], "ioniq9": ["unk", "", ""], "gn7": ["unk", "", ""],
+      "ev4": ["no", "EV4의 0x3C1은 24바이트·내용 고정이라 레버 위치를 못 읽음", "EV4 0x3C1 is 24 bytes and constant, so the lever position cannot be read"],
+      "ev5": ["unk", "", ""], "gv80": ["unk", "", ""], "tucson": ["unk", "", ""],
+      "palisade": ["no", "CAN-FD 0x3C1 전용 설정", "CAN-FD 0x3C1 only"], "k5": ["no", "CAN-FD 0x3C1 전용 설정", "CAN-FD 0x3C1 only"], "dh": ["no", "CAN-FD 0x3C1 전용 설정", "CAN-FD 0x3C1 only"]
+    }},
+    {"id": "16", "keys": ["CanfdBlinkerMenuTest"], "name": {"ko": "Kick 명령 시험", "en": "Kick command test"}, "cells": {
+      "i5pe": ["ok", "SPAS2 경로 램프 확인(10-26, ccnc_porting R11)", "SPAS2 path lamp confirmed (10-26, ccnc_porting R11)"],
+      "ioniq9": ["should", "", ""], "gn7": ["should", "", ""],
+      "ev4": ["ok", "각주 ⁴: P단 메뉴 시험 좌·우 점등(10-26, 직송 100 Hz)", "Note ⁴: parked menu test lit left and right (10-26, direct 100 Hz)"],
+      "ev5": ["should", "", ""],
+      "gv80": ["no", "피기백·직송 모두 램프 피드백 변화 0(11-14)", "Piggyback and direct: no lamp feedback change (11-14)"],
+      "tucson": ["unk", "설정표(11-16)는 ?. 같은 문서의 경로표(11-17)는 P단 메뉴 시험 피기백 점등(11-12, §56)으로 ✅ — 두 표가 다름, 확인 필요", "The settings table (11-16) says ?. The path table in the same file (11-17) marks ✅ from the parked menu test with piggyback (11-12, §56). The two tables disagree; needs a check"],
+      "palisade": ["no", "CAN-FD 전용 설정(일반 CAN은 17번)", "CAN-FD only (classic CAN uses 17)"],
+      "k5": ["no", "CAN-FD 전용 설정(일반 CAN은 17번)", "CAN-FD only (classic CAN uses 17)"],
+      "dh": ["no", "CAN-FD 전용 설정(일반 CAN은 17번)", "CAN-FD only (classic CAN uses 17)"]
+    }},
+    {"id": "17", "keys": ["PalisadeBlinkerTest"], "name": {"ko": "CGW1 시험", "en": "CGW1 test"}, "cells": {
+      "i5pe": ["no", "CAN-FD 차에서는 아무것도 보내지 않음(설정 설명)", "Sends nothing on CAN-FD cars (setting description)"],
+      "ioniq9": ["no", "CAN-FD 차에서는 아무것도 보내지 않음(설정 설명)", "Sends nothing on CAN-FD cars (setting description)"],
+      "gn7": ["no", "CAN-FD 차에서는 아무것도 보내지 않음(설정 설명)", "Sends nothing on CAN-FD cars (setting description)"],
+      "ev4": ["no", "CAN-FD 차에서는 아무것도 보내지 않음(설정 설명)", "Sends nothing on CAN-FD cars (setting description)"],
+      "ev5": ["no", "CAN-FD 차에서는 아무것도 보내지 않음(설정 설명)", "Sends nothing on CAN-FD cars (setting description)"],
+      "gv80": ["no", "CAN-FD 차에서는 아무것도 보내지 않음(설정 설명)", "Sends nothing on CAN-FD cars (setting description)"],
+      "tucson": ["no", "CAN-FD 차에서는 아무것도 보내지 않음(설정 설명)", "Sends nothing on CAN-FD cars (setting description)"],
+      "palisade": ["ok", "P단 시험 외부 램프 점등 영상(11-03)", "Parked test lit the exterior lamp on video (11-03)"],
+      "k5": ["no", "계기판·BVM만 반응, 외부 램프 안 켜짐(11-14)", "Only cluster and BVM react, exterior lamp off (11-14)"],
+      "dh": ["no", "계기판만 반응, 앞 램프 안 켜짐", "Only the cluster reacts, front lamp off"]
+    }},
+    {"id": "18", "keys": ["CanfdBlinkerTest"], "name": {"ko": "정차 SPAS 시험", "en": "Parked SPAS test"}, "cells": {
+      "i5pe": ["unk", "", ""],
+      "ioniq9": ["no", "주차 ECU 무응답이라 시작 조건 불충족", "Parking ECU does not answer, so it never starts"],
+      "gn7": ["no", "주차 ECU 무응답이라 시작 조건 불충족", "Parking ECU does not answer, so it never starts"],
+      "ev4": ["no", "무응답 + 0x3C1 24바이트라 시작 못 함", "No answer, and 24-byte 0x3C1, so it never starts"],
+      "ev5": ["unk", "", ""],
+      "gv80": ["no", "주차 ECU 무응답이라 시작 조건 불충족", "Parking ECU does not answer, so it never starts"],
+      "tucson": ["unk", "", ""],
+      "palisade": ["no", "CAN-FD 전용 설정", "CAN-FD only"], "k5": ["no", "CAN-FD 전용 설정", "CAN-FD only"], "dh": ["no", "CAN-FD 전용 설정", "CAN-FD only"]
+    }},
+    {"id": "19", "keys": ["CanfdBlinkerStalk"], "name": {"ko": "레버 재생", "en": "Lever replay"}, "cells": {
+      "i5pe": ["no", "재생 700프레임에도 램프 무반응", "No lamp after 700 replayed frames"],
+      "ioniq9": ["unk", "", ""], "gn7": ["unk", "", ""],
+      "ev4": ["no", "EV4의 0x3C1은 24바이트·내용 고정이라 해당 없음", "EV4 0x3C1 is 24 bytes and constant: not applicable"],
+      "ev5": ["unk", "", ""],
+      "gv80": ["no", "10-28·11-12·11-14 모두 램프 0", "No lamp on 10-28, 11-12, 11-14"],
+      "tucson": ["no", "깜빡이 안 켜짐, BVM만 뜸(차주 보고)", "No turn signal, only BVM (owner report)"],
+      "palisade": ["no", "CAN-FD 전용 설정", "CAN-FD only"], "k5": ["no", "CAN-FD 전용 설정", "CAN-FD only"], "dh": ["no", "CAN-FD 전용 설정", "CAN-FD only"]
+    }},
+    {"id": "20", "keys": ["CanfdAprkDiag"], "name": {"ko": "APRK 진단", "en": "APRK diagnostic"}, "cells": {
+      "i5pe": ["should", "", ""], "ioniq9": ["unk", "", ""],
+      "gn7": ["no", "0x7B1 12회, 응답 0", "12 requests to 0x7B1, 0 answers"],
+      "ev4": ["no", "주차 ECU 무응답", "Parking ECU does not answer"],
+      "ev5": ["unk", "", ""], "gv80": ["unk", "", ""],
+      "tucson": ["no", "HDA2 카메라 SCC 전용 — HDA1 차", "HDA2 camera-SCC only; this car is HDA1"],
+      "palisade": ["no", "CAN-FD 전용 설정", "CAN-FD only"], "k5": ["no", "CAN-FD 전용 설정", "CAN-FD only"], "dh": ["no", "CAN-FD 전용 설정", "CAN-FD only"]
+    }}
+  ],
+  "summary": {
+    "i5pe": {"ko": ["SPAS2 ✅ · 비상등 ✅", "레버 재생 ❌ · 주차ECU ❌", "레버 회전 구분(14) ✅"], "en": ["SPAS2 ✅ · hazard ✅", "Lever replay ❌ · parking ECU ❌", "Lever turn split (14) ✅"]},
+    "ioniq9": {"ko": ["SPAS2 ✅(주행 Kick)", "주차ECU ❌ · 비상등 ?"], "en": ["SPAS2 ✅ (driving Kick)", "Parking ECU ❌ · hazard ?"]},
+    "gn7": {"ko": ["SPAS2 ✅(옛 직송, bus-off 이력)", "주차ECU ❌"], "en": ["SPAS2 ✅ (old direct send, one bus-off)", "Parking ECU ❌"]},
+    "ev4": {"ko": ["SPAS2 ✅(P단)", "0x3C1이 24바이트라 레버 계열 ❌", "주차ECU ❌"], "en": ["SPAS2 ✅ (parked)", "24-byte 0x3C1: lever paths ❌", "Parking ECU ❌"]},
+    "ev5": {"ko": ["SPAS2·비상등 △(조건만)", "결과 기록 없음"], "en": ["SPAS2 and hazard △ (conditions only)", "No results recorded"]},
+    "gv80": {"ko": ["SPAS2·레버·BVM 버스 0 경로 모두 ❌", "남은 길: 차체 버스용 외부 CAN 장치"], "en": ["SPAS2, lever and BVM on bus 0 all ❌", "Remaining route: an external CAN device on the body bus"]},
+    "tucson": {"ko": ["SPAS2 ✅(P단 피기백, 모드 1만)", "비상등 ❌(0x1EA 없음·HDA1)", "차선 점선은 StripNet 설정으로"], "en": ["SPAS2 ✅ (parked piggyback, mode 1 only)", "Hazard ❌ (no 0x1EA, HDA1)", "Dashed lanes via the StripNet setting"]},
+    "palisade": {"ko": ["CGW1 ✅(외부 램프)", "리모컨 차로변경 깜빡이 ✅"], "en": ["CGW1 ✅ (exterior lamp)", "Remote lane-change signal ✅"]},
+    "k5": {"ko": ["CGW1 ❌(계기판·BVM만)"], "en": ["CGW1 ❌ (cluster and BVM only)"]},
+    "dh": {"ko": ["CGW1 ❌(계기판만)", "직송 1/2 시험이 남음"], "en": ["CGW1 ❌ (cluster only)", "Direct-send test 1/2 still to do"]}
+  },
+  "sources": {
+    "ko": "차주 로그·보고 기록(measurements §29·§45·§49·§50·§56~§63, 05_can, ccnc_porting_20261109, turnlight_car_matrix_20261116). 조건은 11-16 코드 감사, 표는 차 묶음별 작성 후 독립 재확인. 설정 이름·값 범위는 joongyu01/carrot-wip-dev의 carrot_settings.json.",
+    "en": "Owner logs and reports (measurements §29, §45, §49, §50, §56-§63; 05_can; ccnc_porting_20261109; turnlight_car_matrix_20261116). Conditions from the 11-16 code audit; the table was written per car group and re-checked independently. Setting names and ranges from carrot_settings.json on joongyu01/carrot-wip-dev."
+  }
+}
