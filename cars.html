@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>내 차 깜빡이 한눈에</title>
+<meta name="description" content="CarrotPilot 깜빡이(Turnlight)가 내 차에서 되는지, 무엇을 켜면 되는지 차종별로 한눈에 보는 페이지">
+<style>
+  :root { --bg:#0f1115; --card:#181b22; --line:#2a2f3a; --text:#e8eaf0; --muted:#9aa3b2; --accent:#7aa2ff;
+          --ok:#2ecc71; --should:#f1c40f; --no:#e74c3c; --unk:#7f8796; --na:#3a3f4a; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.6 -apple-system, "Segoe UI", "Malgun Gothic", sans-serif; }
+  main { max-width:1100px; margin:0 auto; padding:24px 16px 64px; }
+  h1 { font-size:24px; margin:0 0 4px; }
+  .sub { color:var(--muted); margin:0 0 12px; }
+  .bar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:8px 0; }
+  .bar button, .bar a { background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px; padding:6px 14px; cursor:pointer; font:inherit; text-decoration:none; }
+  .bar button.on { border-color:var(--accent); color:var(--accent); }
+  .bar a:hover, .bar a:focus-visible { border-color:var(--accent); color:var(--accent); }
+  .bar .upd { color:var(--muted); font-size:13px; margin-left:auto; }
+  .filters { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 6px; }
+  .filters button { background:transparent; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 12px; cursor:pointer; font:inherit; font-size:14px; }
+  .filters button.on { color:var(--text); border-color:var(--accent); background:rgba(122,162,255,.12); }
+  .filters button b { font-weight:700; margin-left:4px; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:14px; margin-top:10px; }
+  @media (max-width:420px) { .cards { grid-template-columns:1fr; } }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:10px; border-top:4px solid var(--unk); }
+  .card.ok { border-top-color:var(--ok); } .card.partial { border-top-color:var(--should); } .card.no { border-top-color:var(--no); }
+  .head { display:flex; align-items:flex-start; gap:10px; }
+  .head h2 { font-size:19px; margin:0; flex:1; }
+  .head .plat { display:block; color:var(--muted); font-size:13px; font-weight:400; }
+  .badge { border-radius:999px; padding:3px 12px; font-weight:700; font-size:14px; white-space:nowrap; }
+  .badge.ok { background:rgba(46,204,113,.18); color:var(--ok); } .badge.partial { background:rgba(241,196,15,.16); color:var(--should); }
+  .badge.no { background:rgba(231,76,60,.16); color:var(--no); } .badge.unk { background:rgba(127,135,150,.16); color:var(--unk); }
+  .line { margin:0; font-size:15px; }
+  .k { color:var(--muted); font-size:13px; font-weight:600; margin:0 0 2px; }
+  .how { list-style:none; margin:0; padding:0; }
+  .how li { background:#11141a; border:1px solid var(--line); border-radius:8px; padding:6px 10px; margin:4px 0; font-size:14px; }
+  .how li code { background:none; padding:0; color:var(--accent); font-size:14px; word-break:break-all; }
+  .how li .tt { display:block; color:var(--muted); font-size:12px; }
+  .row p { margin:0; font-size:14px; color:#cfd5e1; }
+  .row.caution p { color:#f3d48a; }
+  .paths { display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; padding-top:6px; border-top:1px solid var(--line); }
+  .pc { font-size:12px; border-radius:6px; padding:2px 8px; border:1px solid var(--line); color:var(--muted); }
+  .pc.ok { color:var(--ok); border-color:rgba(46,204,113,.4); } .pc.should { color:var(--should); border-color:rgba(241,196,15,.4); }
+  .pc.no { color:var(--no); border-color:rgba(231,76,60,.35); } .pc.unk { color:var(--unk); }
+  .legend { color:var(--muted); font-size:13px; margin-top:22px; border-top:1px solid var(--line); padding-top:12px; }
+  .legend p { margin:4px 0; }
+  .empty { color:var(--muted); padding:24px 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1 id="t-title"></h1>
+  <p class="sub" id="t-sub"></p>
+  <div class="bar">
+    <button id="b-ko" class="on" onclick="setLang('ko')">한국어</button>
+    <button id="b-en" onclick="setLang('en')">English</button>
+    <a id="t-full" href="index.html"></a>
+    <span class="upd" id="updated"></span>
+  </div>
+  <div class="filters" id="filters" role="group"></div>
+  <div class="cards" id="cards"></div>
+  <div class="legend" id="legend"></div>
+</main>
+<script>
+const T = {
+  title: {ko:'내 차 깜빡이, 되나요?', en:'Do the turn signals work on my car?'},
+  sub: {ko:'CarrotPilot이 깜빡이(Turnlight)를 켜 주는지 차종별로 정리했습니다. 차주 로그와 보고로 확인한 것만 적었고, 확인 안 된 것은 그렇다고 적었습니다.',
+        en:'Whether CarrotPilot can switch the turn signals on, car by car. Only what owner logs and reports showed; anything unconfirmed says so.'},
+  full: {ko:'전체 표·시험 방법 →', en:'Full table and test steps →'},
+  updated: {ko:'갱신 ', en:'Updated '},
+  all: {ko:'전체', en:'All'},
+  how: {ko:'켜는 법', en:'How to set it'}, hazard: {ko:'비상등', en:'Hazard lights'},
+  caution: {ko:'주의', en:'Caution'}, next: {ko:'남은 시험', en:'Still to test'},
+  none: {ko:'해당하는 차가 없습니다.', en:'No car matches.'},
+  leg1: {ko:'카드 위 색: 초록 = 깜빡이 됨 · 노랑 = 일부만/조건부 · 빨강 = 안 됨 · 회색 = 아직 모름.',
+         en:'Card colour: green = turn signals work · yellow = partly or with conditions · red = does not work · grey = not known yet.'},
+  leg2: {ko:'아래 작은 칸은 CAN 경로별 결과입니다(✅ 됨 · △ 조건만 맞음 · ❌ 안 됨 · ? 기록 없음). 자세한 근거는 전체 표에서 칸을 누르면 나옵니다.',
+         en:'The small chips are results per CAN path (✅ works · △ conditions met only · ❌ does not work · ? no record). The full table shows the evidence for each cell.'},
+  leg3: {ko:'설정은 Carrot Web › 설정에서 바꿉니다. 시험값은 끝나면 0으로 돌려 주세요.',
+         en:'Change settings in Carrot Web › Settings. Set test values back to 0 when done.'},
+};
+const V = {ok:{ko:'깜빡이 됨',en:'Works'}, partial:{ko:'일부·조건부',en:'Partly'}, no:{ko:'안 됨',en:'Does not work'}, unk:{ko:'아직 모름',en:'Not known yet'}};
+const SYM = {ok:'✅', should:'△', no:'❌', unk:'?', na:'–'};
+let lang = 'ko', M = null, X = null, filt = 'all';
+const t = k => T[k][lang];
+const tx = o => (o && typeof o === 'object' && lang in o) ? o[lang] : o;
+function esc(s){ return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function setLang(l){ lang = l; document.getElementById('b-ko').className = l==='ko'?'on':''; document.getElementById('b-en').className = l==='en'?'on':''; render(); }
+function setFilter(f){ filt = f; render(); }
+// "Key = value" -> code + the setting's title from tests.json params when the key is known
+function howItem(s){
+  const m = String(s).match(/^\s*([A-Za-z0-9_]+)\s*=\s*(.+)$/);
+  if (!m) return `<li>${esc(s)}</li>`;
+  const p = X && X.params[m[1]];
+  return `<li><code>${esc(m[1])} = ${esc(m[2])}</code>${p ? `<span class="tt">${esc(tx(p))}</span>` : ''}</li>`;
+}
+function card(c){
+  const g = M.guide[c.id], v = g.verdict, G = g[lang];
+  const plat = `${c.bus}${c.hda && c.hda !== '?' ? ' · ' + c.hda : ''}`;
+  const paths = M.paths.filter(p => p.cells[c.id] && p.cells[c.id][0] !== 'na')
+    .map(p => { const cell = p.cells[c.id]; const note = (lang==='ko' ? cell[1] : cell[2]) || '';
+      return `<span class="pc ${cell[0]}" title="${esc(note)}">${SYM[cell[0]]} ${esc(tx(p.short || p.name))}</span>`; }).join('');
+  const row = (k, val, cls='') => val ? `<div class="row ${cls}"><p class="k">${t(k)}</p><p>${esc(val)}</p></div>` : '';
+  return `<article class="card ${v}" aria-label="${esc(lang==='ko'?c.ko:c.en)}: ${esc(V[v][lang])}">
+    <div class="head"><h2>${esc(lang==='ko'?c.ko:c.en)}<span class="plat">${esc(plat)}</span></h2><span class="badge ${v}">${esc(V[v][lang])}</span></div>
+    <p class="line">${esc(G.line)}</p>
+    ${G.how && G.how.length ? `<div><p class="k">${t('how')}</p><ul class="how">${G.how.map(howItem).join('')}</ul></div>` : ''}
+    ${row('hazard', G.hazard)}${row('caution', G.caution, 'caution')}${row('next', G.next)}
+    <div class="paths">${paths}</div>
+  </article>`;
+}
+function render(){
+  document.documentElement.lang = lang;
+  for (const k of ['title','sub','full']) document.getElementById('t-'+k).textContent = t(k);
+  document.getElementById('legend').innerHTML = ['leg1','leg2','leg3'].map(k => `<p>${esc(t(k))}</p>`).join('');
+  if (!M) return;
+  document.title = t('title');
+  document.getElementById('updated').textContent = t('updated') + M.updated;
+  const cars = M.cars.filter(c => M.guide[c.id]);
+  const count = v => cars.filter(c => M.guide[c.id].verdict === v).length;
+  document.getElementById('filters').innerHTML = [['all', cars.length], ...Object.keys(V).map(v => [v, count(v)])]
+    .filter(([k, n]) => k === 'all' || n)
+    .map(([k, n]) => `<button class="${filt===k?'on':''}" aria-pressed="${filt===k}" onclick="setFilter('${k}')">${esc(k==='all' ? t('all') : V[k][lang])}<b>${n}</b></button>`).join('');
+  const shown = cars.filter(c => filt === 'all' || M.guide[c.id].verdict === filt);
+  document.getElementById('cards').innerHTML = shown.length ? shown.map(card).join('') : `<p class="empty">${t('none')}</p>`;
+}
+render();
+Promise.all(['data/matrix.json','data/tests.json'].map(u => fetch(u).then(r => r.json())))
+  .then(([m, x]) => { M = m; X = x; render(); })
+  .catch(e => { document.getElementById('cards').textContent = 'data load failed: ' + e; });
+</script>
+</body>
+</html>

@@ -9,7 +9,8 @@ CarrotPilot 깜빡이(Turnlight) 기능이 현대·기아·제네시스 차종�
 
 | 파일 | 내용 |
 |---|---|
-| `index.html` | 화면. 데이터를 담지 않고 아래 JSON을 읽어 그린다 |
+| `index.html` | 전체 표 화면. 데이터를 담지 않고 아래 JSON을 읽어 그린다 |
+| `cars.html` | 차종별 카드 화면(「내 차 깜빡이, 되나요?」). `matrix.json`의 `guide`·`paths[].short`와 `tests.json`의 `params`(설정 제목)를 읽는다 |
 | `data/matrix.json` | 차종 목록, 경로×차종 표, 설정×차종 표, 차종 요약, 근거 |
 | `data/tests.json` | 설정별 시험 방법, 설정 키의 이름·범위·기본값(`params`), 기록 방법 |
 
@@ -21,6 +22,9 @@ CarrotPilot 깜빡이(Turnlight) 기능이 현대·기아·제네시스 차종�
    - 근거에는 날짜와 결과만 쓴다. 예: `"P단 16번 시험 좌·우 점등(11-20)"`
    - 네 번째 값을 넣으면 기호 대신 그 글자를 보여 준다(예: `"1만"`).
 3. 맨 위 `updated` 날짜를 바꾼다. 차종 요약이 달라지면 `summary`도 고친다.
+   - 차주용 카드(`cars.html`)는 `guide.<차 id>`다. `verdict`(`ok` 주행 중 Kick·리모컨으로 켜짐 · `partial` P단 시험만 또는 큰 단서 · `no` 시험했지만 안 켜짐 · `unk` 결과 없음)와 언어별 `line`·`how`·`hazard`·`caution`·`next`.
+   - `how`는 한 줄에 `키 = 값` 하나. 키가 `tests.json`의 `params`에 있으면 카드에 설정 제목이 같이 나온다.
+   - 차를 추가하면 `cars[]`, 모든 `paths[]`·`settings[]` 행의 `cells`, `summary`, `guide`에 같은 id를 넣는다.
 4. 시험 방법을 고칠 때는 `data/tests.json`의 `tests.<id>`를 고친다.
 5. 커밋하고 push한다. GitHub Pages가 1~2분 안에 반영한다.
 
