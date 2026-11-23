@@ -618,7 +618,7 @@
     }
   },
   "sources": {
-    "ko": "차주 로그·보고 기록(measurements §29·§45·§49·§50·§56~§78, 05_can, ccnc_porting_20261109, turnlight_car_matrix_20261116). 조건은 11-16 코드 감사와 joongyu01/carrot-wip-dev ddeb4677(11-20) 코드 확인, 표는 차 묶음별 작성 후 독립 재확인. 설정 이름·값 범위는 ddeb4677의 carrot_settings.json.",
-    "en": "Owner logs and reports (measurements §29, §45, §49, §50, §56-§78; 05_can; ccnc_porting_20261109; turnlight_car_matrix_20261116). Conditions from the 11-16 code audit and a check of joongyu01/carrot-wip-dev ddeb4677 (11-20); the table was written per car group and re-checked independently. Setting names and ranges from carrot_settings.json at ddeb4677."
+    "ko": "차주 로그·보고 기록(measurements §29·§45·§49·§50·§56~§78, 05_can, ccnc_porting_20261109, turnlight_car_matrix_20261116). 조건은 11-16 코드 감사와 joongyu01/carrot-wip-dev ddeb4677(11-20) 코드 확인, 표는 차 묶음별 작성 후 독립 재확인. 설정 이름·값 범위는 446bc385(11-23)의 carrot_settings.json.",
+    "en": "Owner logs and reports (measurements §29, §45, §49, §50, §56-§78; 05_can; ccnc_porting_20261109; turnlight_car_matrix_20261116). Conditions from the 11-16 code audit and a check of joongyu01/carrot-wip-dev ddeb4677 (11-20); the table was written per car group and re-checked independently. Setting names and ranges from carrot_settings.json at 446bc385 (11-23)."
   }
 }
