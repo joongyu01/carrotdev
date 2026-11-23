@@ -230,8 +230,8 @@
               "en": ["No record judging the 5-flash wait."]}
     },
     "16": {
-      "pre": {"ko": ["CAN-FD 차. P단 정차에서 합니다(설정은 기어·속도와 상관없이 동작).", "2인 1조: 한 명은 차 밖에서 램프 확인.", "CanfdBlinkerControl=0 (켜져 있으면 아무것도 안 보냄 — 끄고 재부팅).", "GV80 3·4는 P단과 D단 정차(브레이크) 둘 다에서 합니다."],
-              "en": ["CAN-FD car. Do it parked in P (the setting works in any gear and speed).", "Two people: one outside watching the lamps.", "CanfdBlinkerControl=0 (while on, nothing is sent; turn it off and reboot).", "GV80 3/4: do it both in P and stopped in D (brake held)."]},
+      "pre": {"ko": ["CAN-FD 차. P단 정차에서 합니다(설정은 기어·속도와 상관없이 동작).", "2인 1조: 한 명은 차 밖에서 램프 확인.", "CanfdBlinkerControl=0 (켜져 있으면 아무것도 안 보냄 — 끄고 재부팅)."],
+              "en": ["CAN-FD car. Do it parked in P (the setting works in any gear and speed).", "Two people: one outside watching the lamps.", "CanfdBlinkerControl=0 (while on, nothing is sent; turn it off and reboot)."]},
       "set": [
         {"key": "CanfdBlinkerMenuTest", "ko": "1 (왼쪽) / 2 (오른쪽) → 끝나면 0. 3/4는 GV80 전용(다른 차는 1/2와 같음)", "en": "1 (left) / 2 (right), then 0. 3/4 are GV80 only (other cars send the same as 1/2)"},
         {"key": "CanfdBlinkerKickMode", "ko": "1 (기본)", "en": "1 (default)"},
@@ -242,8 +242,8 @@
                 "en": ["In P, set 1 (left).", "The observer watches the front, rear and side lamps.", "Set 0, then repeat with 2 (right).", "Always finish with 0. While on, parking assist and surround view may stop. A reboot (including an ignition cycle) resets it to 0."]},
       "check": {"ko": ["외부 깜빡이 점등(영상).", "계기판 표시.", "CAN 오류·화면 경고 없음."],
                 "en": ["Exterior signal lights (video).", "Cluster shows it.", "No CAN error or on-screen warning."]},
-      "unk": {"ko": ["명령 시험도 송신 방식을 따른다(코드). 0이면 주차 ECU가 답하지 않는 차에서 안 나감. 2·3 직송은 Kick=1일 때만(다음 시동부터).", "GV80 3/4(순정 주차 작동 신호): 전부 P단. 몸체 프레임 전부 버스 도달·차단 0인데 0x413·0x426·carState 반응 0(11-20, §78). D단 정차(브레이크) 3/4 재시험 대기."],
-              "en": ["The command test follows the send mode (code). With 0 nothing goes out on cars whose parking ECU does not answer. Direct 2/3 only with Kick=1 (from the next ignition).", "GV80 3/4 (stock parking-active body): all in P. Every body frame reached the bus and nothing was blocked, yet 0x413, 0x426 and carState did not react (11-20, §78). A 3/4 retest stopped in D (brake held) is pending."]}
+      "unk": {"ko": ["명령 시험도 송신 방식을 따른다(코드). 0이면 주차 ECU가 답하지 않는 차에서 안 나감. 2·3 직송은 Kick=1일 때만(다음 시동부터).", "GV80 3/4(순정 주차 작동 신호): 전부 P단. 몸체 프레임 전부 버스 도달·차단 0인데 0x413·0x426·carState 반응 0(11-20, §78). 안 되는 차로 정리(11-23)."],
+              "en": ["The command test follows the send mode (code). With 0 nothing goes out on cars whose parking ECU does not answer. Direct 2/3 only with Kick=1 (from the next ignition).", "GV80 3/4 (stock parking-active body): all in P. Every body frame reached the bus and nothing was blocked, yet 0x413, 0x426 and carState did not react (11-20, §78). Filed as not working (11-23)."]}
     },
     "17": {
       "pre": {"ko": ["일반 CAN 차(CGW1 0x541). CAN-FD 차에서는 아무것도 보내지 않음.", "P단·정차·제어 해제. 차 밖 관찰자 1명."],

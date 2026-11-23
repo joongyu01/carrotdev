@@ -29,7 +29,7 @@
         "ev4": ["ok", "P단 메뉴 시험 좌·우 점등(10-26, 직송 100 Hz)", "Parked menu test lit left and right (10-26, direct 100 Hz)"],
         "ev5": ["should", "HDA2·카메라 SCC, 결과 기록 없음", "HDA2 with camera SCC, no result yet"],
         "ev6pe": ["ok", "P단 메뉴 시험 좌·우 5/5회 점등, 0.40/0.40초, 오류 0(11-20)", "Parked menu test lit left and right in 5 of 5 runs, 0.40/0.40 s, no errors (11-20)"],
-        "gv80": ["no", "우리 0x16A 램프 0: 피기백·직송(11-14), byte 18 추가 후 P단(11-20). 순정 자동주차 0x16A 3/4는 램프 켬(11-19). 이를 흉내 낸 메뉴 3/4도 전부 P단: 몸체 프레임 전부 버스 도달·차단 0인데 0x413·0x426·carState 반응 0(11-20, §78). D단 정차(브레이크) 3/4 재시험 대기", "Our 0x16A never lit the lamp: piggyback and direct (11-14), and in P after adding byte 18 (11-20). The stock auto-parking 0x16A 3/4 does light it (11-19), but menu test 3/4, which copies it, was all in P: every body frame reached the bus and nothing was blocked, yet 0x413, 0x426 and carState did not react (11-20, §78). A 3/4 retest stopped in D (brake held) is pending"],
+        "gv80": ["no", "우리 0x16A 램프 0: 피기백·직송(11-14), byte 18 추가 후 P단(11-20). 순정 자동주차 0x16A 3/4는 램프 켬(11-19). 이를 흉내 낸 메뉴 3/4도 전부 P단: 몸체 프레임 전부 버스 도달·차단 0인데 0x413·0x426·carState 반응 0(11-20, §78). 소프트웨어 시험 종료, 안 되는 차로 정리(11-23)", "Our 0x16A never lit the lamp: piggyback and direct (11-14), and in P after adding byte 18 (11-20). The stock auto-parking 0x16A 3/4 does light it (11-19), but menu test 3/4, which copies it, was all in P: every body frame reached the bus and nothing was blocked, yet 0x413, 0x426 and carState did not react (11-20, §78). Software testing closed; filed as not working (11-23)"],
         "tucson": ["ok", "P단 메뉴 시험 피기백 점등(11-12), 수정 f763fd21 뒤 재시험 OK. 왼쪽 원터치(값 3) 0.40/0.40초 깨끗(11-18, P단)", "Parked menu test lit with piggyback (11-12), OK again after fix f763fd21. Left one-touch (value 3) flashed cleanly 0.40/0.40 s (11-18, in P)"],
         "sorento": ["ok", "P단 메뉴 시험 좌·우 0.36/0.36초 점멸(11-19). Spas2Only 0·1·2면 0.5초 뒤 크루즈 오류(11-19), 3·4는 P단 오류 0(11-20·11-22 재시험). D단 미확인", "Parked menu test flashed left and right 0.36/0.36 s (11-19). Spas2Only 0/1/2 fault cruise after 0.5 s (11-19); 3/4 had no fault in P (11-20, retest 11-22). D untested"],
         "palisade": ["na", "", ""],
@@ -319,7 +319,7 @@
       "ev4": ["ok", "각주 ⁴: P단 메뉴 시험 좌·우 점등(10-26, 직송 100 Hz)", "Note ⁴: parked menu test lit left and right (10-26, direct 100 Hz)"],
       "ev5": ["should", "", ""],
       "ev6pe": ["ok", "P단 좌·우 5/5회 점등, 오류 0(11-20)", "Parked: left and right lit 5 of 5 runs, no errors (11-20)"],
-      "gv80": ["no", "1/2 램프 0(11-14). byte 18 추가 후 P단 1/2도 램프 0(11-20). GV80 전용 3/4(순정 주차 작동 신호)도 전부 P단: 몸체 프레임 전부 버스 도달·차단 0인데 0x413·0x426·carState 반응 0(11-20, §78). D단 정차(브레이크) 3/4 재시험 대기", "1/2 never lit (11-14); after the byte-18 fix, 1/2 still lit nothing in P (11-20). The GV80-only 3/4 (stock parking-active body) was all in P too: every body frame reached the bus and nothing was blocked, yet 0x413, 0x426 and carState did not react (11-20, §78). A 3/4 retest stopped in D (brake held) is pending"],
+      "gv80": ["no", "1/2 램프 0(11-14). byte 18 추가 후 P단 1/2도 램프 0(11-20). GV80 전용 3/4(순정 주차 작동 신호)도 전부 P단: 몸체 프레임 전부 버스 도달·차단 0인데 0x413·0x426·carState 반응 0(11-20, §78). 소프트웨어 시험 종료, 안 되는 차로 정리(11-23)", "1/2 never lit (11-14); after the byte-18 fix, 1/2 still lit nothing in P (11-20). The GV80-only 3/4 (stock parking-active body) was all in P too: every body frame reached the bus and nothing was blocked, yet 0x413, 0x426 and carState did not react (11-20, §78). Software testing closed; filed as not working (11-23)"],
       "tucson": ["ok", "P단 메뉴 시험 피기백 점등(11-12), 수정 f763fd21 뒤 재시험 OK", "Parked menu test lit with piggyback (11-12), OK again after fix f763fd21"],
       "sorento": ["ok", "P단 좌·우 정상 점멸(11-19). Spas2Only 0·1·2면 0.5초 뒤 크루즈 오류(11-19), 3·4는 오류 0(11-20·11-22 재시험, P단)", "Parked: left and right flashed normally (11-19). Spas2Only 0/1/2 fault cruise after 0.5 s (11-19); 3/4 had no fault (11-20, retest 11-22, in P)"],
       "palisade": ["no", "CAN-FD 전용 설정(일반 CAN은 17번)", "CAN-FD only (classic CAN uses 17)"],
@@ -389,7 +389,7 @@
       "ev4": ["na", "순정 0x16A가 있는 차는 필요 없음(기본 0)", "Not needed on cars with a stock 0x16A (default 0)"],
       "ev5": ["na", "순정 0x16A가 있는 차는 필요 없음(기본 0)", "Not needed on cars with a stock 0x16A (default 0)"],
       "ev6pe": ["na", "필요 없음: 6.6초 연속 송신에도 크루즈 오류 없음(11-20, P단)", "Not needed: no cruise fault even with 6.6 s of continuous sending (11-20, in P)"],
-      "gv80": ["no", "메뉴 시험 4(Spas2Only 1)·3(Spas2Only 0)·1(Spas2Only 0·2·3), 모두 P단. 몸체 프레임 버스 도달·차단 0, 0x413·0x426·carState 반응 0(11-20, §78). 2와 3+Spas2Only 1은 로그에 없음. Spas2Only 1로 D단 정차(브레이크) 3/4 재시험 대기. 끝나면 0", "Menu test 4 (Spas2Only 1), 3 (Spas2Only 0) and 1 (Spas2Only 0, 2, 3), all in P. Body frames reached the bus, nothing blocked, no reaction on 0x413, 0x426 or carState (11-20, §78). Test 2 and 3 with Spas2Only 1 are not in the log. A 3/4 retest with Spas2Only 1, stopped in D (brake held), is pending. Back to 0 afterwards"],
+      "gv80": ["no", "메뉴 시험 4(Spas2Only 1)·3(Spas2Only 0)·1(Spas2Only 0·2·3), 모두 P단. 몸체 프레임 버스 도달·차단 0, 0x413·0x426·carState 반응 0(11-20, §78). 2와 3+Spas2Only 1은 로그에 없음. 소프트웨어 시험 종료(11-23). 끝나면 0", "Menu test 4 (Spas2Only 1), 3 (Spas2Only 0) and 1 (Spas2Only 0, 2, 3), all in P. Body frames reached the bus, nothing blocked, no reaction on 0x413, 0x426 or carState (11-20, §78). Test 2 and 3 with Spas2Only 1 are not in the log. Software testing closed (11-23). Back to 0 afterwards"],
       "tucson": ["na", "필요 없음: SPAS 송신 중 크루즈 오류 기록 없음(기본 0)", "Not needed: no cruise fault recorded while sending SPAS (default 0)"],
       "sorento": ["ok", "P단(크루즈 꺼짐) 3·4 각 20초 크루즈 오류 0·램프 0.36/0.36초(11-20). 3→4 전환 틈 오류 1회(11-20)는 수정(3d88c036) 뒤 재시험에서 안 남(11-22, P단, 3·4 오류 0). 0·1·2는 0.5초 뒤 크루즈 오류(11-19). D단·크루즈 작동 중 미확인", "In P with cruise off, 3 and 4 ran 20 s each with no cruise fault, lamp 0.36/0.36 s (11-20). The one fault in the 3-to-4 switching gap (11-20) did not come back after the fix (3d88c036) (11-22 retest, in P, 3/4 no fault). 0/1/2 fault cruise after 0.5 s (11-19). D and cruise-on untested", "3"],
       "palisade": ["na", "", ""],
@@ -404,7 +404,7 @@
     "ev4": {"ko": ["SPAS2 ✅(P단)", "0x3C1이 24바이트라 레버 계열 ❌", "주차ECU ❌"], "en": ["SPAS2 ✅ (parked)", "24-byte 0x3C1: lever paths ❌", "Parking ECU ❌"]},
     "ev5": {"ko": ["SPAS2·비상등 △(조건만)", "결과 기록 없음"], "en": ["SPAS2 and hazard △ (conditions only)", "No results recorded"]},
     "ev6pe": {"ko": ["SPAS2 ✅(P단 좌·우 5/5)", "CCNC 확인 · 비상등 △", "주차ECU ❌"], "en": ["SPAS2 ✅ (parked, left/right 5 of 5)", "CCNC confirmed · hazard △", "Parking ECU ❌"]},
-    "gv80": {"ko": ["우리 SPAS2 ❌(byte 18 추가 후에도 P단 램프 0)", "순정 자동주차 0x16A 3/4는 램프 켬", "메뉴 3/4(주차 작동 신호)도 P단 램프 0, 차단 0(11-20) · D단 정차 3/4 재시험 대기"], "en": ["Our SPAS2 ❌ (no lamp in P even with byte 18)", "The stock auto-parking 0x16A 3/4 lights the lamp", "Menu 3/4 (parking-active signal) lit nothing in P, nothing blocked (11-20) · 3/4 retest stopped in D pending"]},
+    "gv80": {"ko": ["우리 SPAS2 ❌(byte 18 추가 후에도 P단 램프 0)", "순정 자동주차 0x16A 3/4는 램프 켬", "메뉴 3/4(주차 작동 신호)도 P단 램프 0, 차단 0(11-20) · 안 되는 차로 정리(11-23)"], "en": ["Our SPAS2 ❌ (no lamp in P even with byte 18)", "The stock auto-parking 0x16A 3/4 lights the lamp", "Menu 3/4 (parking-active signal) lit nothing in P, nothing blocked (11-20) · filed as not working (11-23)"]},
     "tucson": {"ko": ["SPAS2 ✅(P단 피기백, 왼쪽 원터치 깨끗)", "비상등 △: 값 2 빠른 깜빡임 됨, 값 5는 박자 되지만 켜진 동안 떨림", "주차ECU 0x7B1 무응답 ❌", "차선 점선은 StripNet 설정으로"], "en": ["SPAS2 ✅ (parked piggyback, clean left one-touch)", "Hazard △: value 2 fast flash works; value 5 keeps the rhythm but flickers while on", "Parking ECU does not answer 0x7B1 ❌", "Dashed lanes via the StripNet setting"]},
     "sorento": {"ko": ["SPAS2 ✅(P단, Spas2Only 3 필수, 11-22 재확인)", "Spas2Only 0·1·2는 0.5초 뒤 크루즈 오류", "주차ECU 응답한 첫 차 · 비상등 ?"], "en": ["SPAS2 ✅ (parked, Spas2Only 3 required, rechecked 11-22)", "Spas2Only 0/1/2 fault cruise after 0.5 s", "First car whose parking ECU answers · hazard ?"]},
     "palisade": {"ko": ["CGW1 ✅(외부 램프)", "리모컨 차로변경 깜빡이 ✅"], "en": ["CGW1 ✅ (exterior lamp)", "Remote lane-change signal ✅"]},
@@ -517,18 +517,18 @@
     "gv80": {
       "verdict": "no",
       "ko": {
-        "line": "아직 안 됩니다. 순정 주차 신호를 흉내 낸 메뉴 시험 3·4도 P단에서는 깜빡이가 켜지지 않았습니다. 신호는 차까지 나갔고 막힌 것은 없습니다(11-20).",
+        "line": "안 됩니다. 순정 주차 신호를 흉내 낸 메뉴 시험 3·4까지 했지만 깜빡이가 켜지지 않았습니다(11-20, P단). 신호는 차까지 나갔고 막힌 것은 없었습니다.",
         "how": ["CanfdBlinkerKick = 0", "CanfdBlinkerSpas2Only = 0"],
         "hazard": "조건(HDA2·카메라 0x1EA)은 맞습니다. CanfdHazardTest = 1 결과는 없습니다.",
         "caution": "CanfdBlinkerSpas2Only는 재부팅해도 남으니 시험이 끝나면 0으로 돌리세요. 메뉴 시험 중에는 주차보조·어라운드뷰가 멈출 수 있습니다.",
-        "next": "D단 정차(브레이크)에서 CanfdBlinkerSpas2Only = 1, CanfdBlinkerMenuTest 3·4 시험이 남았습니다. 그래도 안 되면 남은 길은 차체 버스용 외부 장치(7~12)입니다."
+        "next": "소프트웨어로 할 시험은 끝났습니다(11-23). 남은 길은 차체 버스용 외부 장치(7~12)입니다."
       },
       "en": {
-        "line": "Not yet. Even menu test 3/4, which copies the stock parking signal, lit no turn signal in P. The frames reached the car and nothing was blocked (11-20).",
+        "line": "No. Even menu test 3/4, which copies the stock parking signal, lit no turn signal (11-20, in P). The frames reached the car and nothing was blocked.",
         "how": ["CanfdBlinkerKick = 0", "CanfdBlinkerSpas2Only = 0"],
         "hazard": "Conditions (HDA2, camera 0x1EA) are met. No result for CanfdHazardTest = 1.",
         "caution": "CanfdBlinkerSpas2Only survives a reboot, so set it back to 0 after the test. Parking assist and surround view may stop during the menu test.",
-        "next": "One test is left: CanfdBlinkerSpas2Only = 1 with CanfdBlinkerMenuTest 3/4, stopped in D (brake held). If that fails too, the only path left is an external device on the body bus (7-12)."
+        "next": "Software testing is closed (11-23). The only path left is an external device on the body bus (7-12)."
       }
     },
     "tucson": {
